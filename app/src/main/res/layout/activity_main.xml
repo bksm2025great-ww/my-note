@@ -2,122 +2,171 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F9FA">
+    android:background="#F8FAFC">
 
-    <!-- 1. बाहर दिखने वाली मुख्य नोट्स स्क्रीन (भेष) -->
+    <!-- मुख्य नोट्स स्क्रीन -->
     <LinearLayout
-        android:id="@+id/layoutNotesView"
+        android:id="@+id/mainNotesContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- ऐप का टाइटल -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="My Notes"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:textColor="#202124"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="14dp"/>
-
-        <!-- सीक्रेट सर्च बार (कीबोर्ड हिस्ट्री पूरी तरह बंद) -->
-        <com.google.android.material.card.MaterialCardView
+        <!-- टॉप बार (Top Menu Bar) -->
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="52dp"
-            app:cardCornerRadius="26dp"
-            app:cardElevation="2dp"
-            app:strokeColor="#E0E0E0"
-            app:strokeWidth="1dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="16dp">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/appTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="My Notes"
+                android:textColor="#0F172A"
+                android:textSize="26sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/btnMenuTheme"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="6dp"
+                android:src="@android:drawable/ic_menu_manage"
+                app:tint="#475569" />
+        </RelativeLayout>
+
+        <!-- सर्च बार (वॉल्ट का सीक्रेट कोड यहीं टाइप होगा) -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:strokeColor="#E2E8F0"
+            app:strokeWidth="1dp">
+
+            <EditText
+                android:id="@+id/searchBar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="🔍"
-                    android:textSize="18sp"
-                    android:layout_marginEnd="10dp"/>
-
-                <EditText
-                    android:id="@+id/searchBarNotes"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@null"
-                    android:hint="Search notes..."
-                    android:textColor="#202124"
-                    android:textColorHint="#9AA0A6"
-                    android:textSize="15sp"
-                    android:inputType="textNoSuggestions|textVisiblePassword"
-                    android:imeOptions="actionSearch"
-                    android:maxLines="1"/>
-            </LinearLayout>
+                android:layout_height="48dp"
+                android:background="@android:color/transparent"
+                android:hint="Search notes..."
+                android:paddingHorizontal="16dp"
+                android:textColor="#0F172A"
+                android:textColorHint="#94A3B8"
+                android:textSize="14sp" />
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- नोट्स की लिस्ट -->
+        <!-- नोट्स की स्क्रॉल लिस्ट -->
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:fillViewport="true">
 
             <LinearLayout
-                android:id="@+id/containerNotesList"
+                android:id="@+id/notesContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <!-- नोट्स कोड के ज़रिए यहाँ अपने आप जुड़ेंगे -->
-            </LinearLayout>
+                android:orientation="vertical" />
         </ScrollView>
     </LinearLayout>
 
-    <!-- 2. नया नोट जोड़ने वाला गोल बटन (+) -->
+    <!-- वेबव्यू (सीक्रेट वॉल्ट के लिए) -->
+    <WebView
+        android:id="@+id/secretVaultWebView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <!-- नया नोट जोड़ने का फ्लोटिंग बटन (+) -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddNote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="24dp"
-        app:tint="#FFFFFF"
-        app:backgroundTint="#6750A4"
         android:contentDescription="Add Note"
-        app:srcCompat="@android:drawable/ic_input_add"/>
+        android:src="@android:drawable/ic_input_add"
+        app:backgroundTint="#7C3AED"
+        app:tint="#FFFFFF" />
 
-    <!-- 3. सीक्रेट वॉल्ट (जादुई कंटेनर - सामान्य रूप से छुपा हुआ) -->
-    <FrameLayout
-        android:id="@+id/layoutSecretVault"
+    <!-- प्रोफेशनल फुल-स्क्रीन नोट एडिटर (डिफ़ॉल्ट रूप से छुपा रहेगा) -->
+    <LinearLayout
+        android:id="@+id/noteEditorContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
-        android:background="#0D0C18">
+        android:background="#FFFFFF"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:visibility="gone">
 
-        <WebView
-            android:id="@+id/vaultWebView"
+        <!-- एडिटर का टॉप एक्शन बार -->
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-        <!-- तुरंत बाहर आने का इमरजेंसी लॉक बटन (Top-Right) -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnQuickLock"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="🔒 Lock"
-            android:textSize="12sp"
-            android:textColor="#FFFFFF"
-            app:backgroundTint="#80000000"
-            app:cornerRadius="20dp"
-            android:layout_gravity="top|end"
-            android:layout_margin="14dp"/>
-    </FrameLayout>
+            android:layout_marginBottom="20dp">
+
+            <ImageView
+                android:id="@+id/btnCancelEdit"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="6dp"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                app:tint="#64748B" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSaveNote"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:text="Save"
+                android:textAllCaps="false"
+                app:cornerRadius="20dp" />
+        </RelativeLayout>
+
+        <!-- नोट का टाइटल -->
+        <EditText
+            android:id="@+id/editNoteTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:hint="Title"
+            android:textColor="#0F172A"
+            android:textColorHint="#94A3B8"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="12dp"
+            android:background="#F1F5F9" />
+
+        <!-- नोट का कंटेंट (मल्टी-लाइन टेक्स्ट) -->
+        <EditText
+            android:id="@+id/editNoteContent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:gravity="top|start"
+            android:hint="Note details..."
+            android:lineSpacingExtra="4dp"
+            android:textColor="#334155"
+            android:textColorHint="#94A3B8"
+            android:textSize="15sp" />
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
