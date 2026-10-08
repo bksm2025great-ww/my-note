@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- इंटरनेट परमिशन: लाइव मौसम और स्पॉटिफ़ाई के लिए -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -10,7 +9,7 @@
         android:label="My Notes"
         android:roundIcon="@android:drawable/ic_menu_edit"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
         
         <activity
             android:name=".MainActivity"
