@@ -7,15 +7,18 @@
     android:layout_height="match_parent"
     android:background="#F8FAFC">
 
-    <!-- मुख्य नोट्स स्क्रीन -->
+    <!-- Main Notes Screen (Camera Safe Padding Added) -->
     <LinearLayout
         android:id="@+id/mainNotesContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp"
+        android:paddingTop="52dp">
 
-        <!-- टॉप बार (Top Menu Bar) -->
+        <!-- Top Bar -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,7 +45,7 @@
                 app:tint="#475569" />
         </RelativeLayout>
 
-        <!-- सर्च बार (वॉल्ट का सीक्रेट कोड यहीं टाइप होगा) -->
+        <!-- Search Bar (Autofill disabled) -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -64,7 +67,7 @@
                 android:textSize="14sp" />
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- नोट्स की स्क्रॉल लिस्ट -->
+        <!-- Notes Scroll List -->
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -79,14 +82,14 @@
         </ScrollView>
     </LinearLayout>
 
-    <!-- वेबव्यू (सीक्रेट वॉल्ट के लिए) -->
+    <!-- WebView for Secret Vault -->
     <WebView
         android:id="@+id/secretVaultWebView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />
 
-    <!-- नया नोट जोड़ने का फ्लोटिंग बटन (+) -->
+    <!-- Add Note FAB Button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddNote"
         android:layout_width="wrap_content"
@@ -98,17 +101,20 @@
         app:backgroundTint="#7C3AED"
         app:tint="#FFFFFF" />
 
-    <!-- प्रोफेशनल फुल-स्क्रीन नोट एडिटर (डिफ़ॉल्ट रूप से छुपा रहेगा) -->
+    <!-- Professional Full-Screen Note Editor (With Top Safe Padding) -->
     <LinearLayout
         android:id="@+id/noteEditorContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF"
         android:orientation="vertical"
-        android:padding="20dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="20dp"
+        android:paddingTop="52dp"
         android:visibility="gone">
 
-        <!-- एडिटर का टॉप एक्शन बार -->
+        <!-- Editor Top Action Bar -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -136,7 +142,7 @@
                 app:cornerRadius="20dp" />
         </RelativeLayout>
 
-        <!-- नोट का टाइटल -->
+        <!-- Title -->
         <EditText
             android:id="@+id/editNoteTitle"
             android:layout_width="match_parent"
@@ -154,7 +160,7 @@
             android:layout_marginVertical="12dp"
             android:background="#F1F5F9" />
 
-        <!-- नोट का कंटेंट (मल्टी-लाइन टेक्स्ट) -->
+        <!-- Content -->
         <EditText
             android:id="@+id/editNoteContent"
             android:layout_width="match_parent"
