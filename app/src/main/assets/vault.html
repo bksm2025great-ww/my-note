@@ -10,16 +10,16 @@
     --card-bg: rgba(255, 255, 255, 0.04);
     --border-color: rgba(255, 255, 255, 0.08);
     --pink-red: #f43f5e;
-    --pink-red-glow: rgba(244, 63, 94, 0.35);
     --yellow-peach: #fbbf24;
-    --yellow-peach-glow: rgba(251, 191, 36, 0.35);
-    --lavender: #c084fc;
+    --bhanu-yellow: #fef08a;
+    --gun-pink: #f472b6;
+    --gun-lavender: #c084fc;
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-  body { background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, var(--bg-dark) 70%); color: var(--text-main); min-height: 100vh; padding: 18px 16px 80px 16px; }
+  body { background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, var(--bg-dark) 75%); color: var(--text-main); min-height: 100vh; padding: 24px 16px 80px 16px; overflow-x: hidden; position: relative; }
 
   /* SVG Icons */
   .icon { width: 18px; height: 18px; vertical-align: middle; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
@@ -28,79 +28,93 @@
   .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
   .title-wrap h2 { font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
   .title-wrap p { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-  .btn-icon-nav { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 14px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px; font-size: 12px; cursor: pointer; }
+  
+  /* Single 60% Transparent Lock Button */
+  .btn-lock { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.15); color: var(--text-main); padding: 8px 16px; border-radius: 20px; display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
 
   /* Dual Status (Weather & Distance) */
   .grid-dual { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
   .status-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 18px; padding: 14px; }
-  .status-header { display: flex; justify-content: space-between; font-size: 11px; color: var(--lavender); font-weight: 600; margin-bottom: 8px; }
+  .status-header { display: flex; justify-content: space-between; font-size: 11px; color: var(--gun-lavender); font-weight: 600; margin-bottom: 8px; }
   .status-value { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 4px; }
   .status-sub { font-size: 11px; color: var(--text-muted); }
 
-  /* Interactive Calendar */
+  /* Calendar Section */
   .calendar-section { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 22px; padding: 18px; margin-bottom: 20px; }
-  .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-  .calendar-header h3 { font-size: 15px; font-weight: 600; }
-  .btn-small-add { background: rgba(192, 132, 252, 0.15); border: 1px solid var(--lavender); color: var(--lavender); font-size: 11px; padding: 4px 10px; border-radius: 12px; cursor: pointer; }
+  .calendar-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .calendar-nav h3 { font-size: 16px; font-weight: 600; }
+  .nav-btn { background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: #fff; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
   .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
   .day-label { font-size: 11px; color: var(--text-muted); padding-bottom: 6px; font-weight: 600; }
-  .date-cell { width: 34px; height: 34px; line-height: 34px; margin: 0 auto; border-radius: 50%; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.25s ease; border: 1.5px solid transparent; }
+  .date-cell { width: 36px; height: 36px; line-height: 34px; margin: 0 auto; border-radius: 50%; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.25s ease; border: 1.5px solid transparent; }
   
-  /* Outline vs Filled Circle Styles */
-  .circle-special { border-color: var(--pink-red); color: #fff; box-shadow: 0 0 10px var(--pink-red-glow); }
-  .circle-effort { border-color: var(--yellow-peach); color: #fff; box-shadow: 0 0 10px var(--yellow-peach-glow); }
+  .circle-special { border-color: var(--pink-red); color: #fff; box-shadow: 0 0 10px rgba(244, 63, 94, 0.4); }
+  .circle-effort { border-color: var(--yellow-peach); color: #fff; box-shadow: 0 0 10px rgba(251, 191, 36, 0.4); }
   .circle-special.active { background: linear-gradient(135deg, #f43f5e, #be123c); border-color: transparent; }
   .circle-effort.active { background: linear-gradient(135deg, #fbbf24, #d97706); border-color: transparent; color: #000; font-weight: 700; }
 
-  /* Date Memory Display Card */
+  /* Memory Card Under Calendar */
   .memory-card { margin-top: 14px; border-radius: 16px; padding: 14px; display: none; animation: fadeIn 0.3s ease; }
-  .memory-card.special-card { background: rgba(244, 63, 94, 0.1); border: 1px solid var(--pink-red); }
-  .memory-card.effort-card { background: rgba(251, 191, 36, 0.1); border: 1px solid var(--yellow-peach); }
-  .memory-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
-  .memory-desc { font-size: 12px; color: #e2e8f0; line-height: 1.4; }
+  .memory-card.special-card { background: rgba(244, 63, 94, 0.12); border: 1px solid var(--pink-red); }
+  .memory-card.effort-card { background: rgba(251, 191, 36, 0.12); border: 1px solid var(--yellow-peach); }
+  .memory-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .memory-desc { font-size: 12px; color: #e2e8f0; line-height: 1.4; margin-bottom: 10px; }
+  .btn-mini-del { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #fda4af; font-size: 11px; padding: 4px 10px; border-radius: 10px; cursor: pointer; }
 
-  /* Countdowns */
+  /* Section Containers */
   .section-wrap { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 18px; margin-bottom: 20px; }
-  .section-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 14px; font-weight: 600; }
-  .timer-box { background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: 14px; padding: 12px; margin-bottom: 10px; }
-  .timer-title { font-size: 12px; color: var(--lavender); margin-bottom: 6px; }
-  .timer-digits { font-size: 20px; font-weight: 800; letter-spacing: 1px; color: #fff; }
-  .timer-digits span { font-size: 11px; font-weight: 400; color: var(--text-muted); margin-right: 6px; }
+  .section-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-size: 14px; font-weight: 600; }
+  .btn-small-add { background: rgba(192, 132, 252, 0.15); border: 1px solid var(--gun-lavender); color: var(--gun-lavender); font-size: 11px; padding: 5px 12px; border-radius: 12px; cursor: pointer; }
 
-  /* Hug & Reactions */
-  .hug-center { text-align: center; padding: 10px 0; position: relative; }
-  .btn-hug { background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none; color: white; padding: 12px 28px; border-radius: 25px; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 18px rgba(236, 72, 153, 0.3); }
-  .reaction-bar { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%) scale(0.8); opacity: 0; pointer-events: none; background: rgba(30, 27, 75, 0.95); border: 1px solid var(--border-color); padding: 8px 14px; border-radius: 30px; display: flex; gap: 14px; transition: all 0.25s ease; }
-  .reaction-bar.show { opacity: 1; pointer-events: auto; transform: translateX(-50%) scale(1); }
-  .reaction-item { font-size: 20px; cursor: pointer; transition: transform 0.15s; }
-  .reaction-item:hover { transform: scale(1.3); }
-  .reaction-notify { font-size: 12px; color: var(--lavender); margin-top: 10px; height: 16px; }
+  /* Multiple Timers */
+  .timer-box { background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 14px; padding: 12px 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+  .timer-info { flex: 1; }
+  .timer-title { font-size: 12px; color: var(--gun-lavender); margin-bottom: 4px; }
+  .timer-digits { font-size: 18px; font-weight: 800; letter-spacing: 0.5px; color: #fff; }
+  .timer-digits span { font-size: 11px; font-weight: 400; color: var(--text-muted); margin-right: 5px; }
 
-  /* Spotify Suggestion Tabs */
-  .spotify-item { background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 14px; padding: 12px; margin-bottom: 10px; }
-  .spotify-input { width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--border-color); color: #fff; font-size: 12px; padding: 6px 0; margin-top: 6px; outline: none; }
+  /* Spotify Tracks: Custom Yellow & Pink-Lavender Themes */
+  .spotify-item-bhanu { background: linear-gradient(135deg, rgba(254, 240, 138, 0.08), rgba(202, 138, 4, 0.03)); border: 1px solid rgba(254, 240, 138, 0.25); border-radius: 14px; padding: 14px; margin-bottom: 12px; }
+  .spotify-item-gun { background: linear-gradient(135deg, rgba(244, 114, 182, 0.08), rgba(192, 132, 252, 0.05)); border: 1px solid rgba(244, 114, 182, 0.25); border-radius: 14px; padding: 14px; }
+  .bhanu-tag { font-size: 11px; color: var(--bhanu-yellow); font-weight: 700; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .gun-tag { font-size: 11px; background: linear-gradient(90deg, var(--gun-pink), var(--gun-lavender)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .spotify-input { width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--border-color); color: #fff; font-size: 13px; padding: 6px 0; outline: none; }
   .spotify-input::placeholder { color: var(--text-muted); }
+
+  /* Instagram Style Floating Hearts Container */
+  .heart-particle { position: fixed; bottom: -20px; pointer-events: none; z-index: 999; animation: floatUp 2.8s ease-out forwards; }
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(0.6); opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 0.8; }
+    100% { transform: translateY(-90vh) scale(1.4); opacity: 0; }
+  }
+
+  /* Modal Form (Add Date Memory & Add Countdown) */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+  .modal-box { background: #131927; border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 20px; width: 100%; max-width: 320px; }
+  .modal-box h4 { font-size: 16px; margin-bottom: 12px; }
+  .modal-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 10px; color: #fff; padding: 10px 12px; margin-bottom: 10px; font-size: 13px; outline: none; }
+  .modal-select { width: 100%; background: #1e293b; border: 1px solid var(--border-color); border-radius: 10px; color: #fff; padding: 10px; margin-bottom: 14px; font-size: 13px; outline: none; }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+  .btn-modal-cancel { background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); padding: 8px 14px; border-radius: 10px; font-size: 12px; cursor: pointer; }
+  .btn-modal-save { background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none; color: #fff; padding: 8px 16px; border-radius: 10px; font-size: 12px; font-weight: 600; cursor: pointer; }
 
   @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
 
-  <!-- Top Bar -->
+  <!-- Top Bar with Single 60% Transparent Lock -->
   <div class="top-bar">
     <div class="title-wrap">
       <h2>Bhanu & Gun Space</h2>
       <p>Synchronized Space</p>
     </div>
-    <div style="display: flex; gap: 8px;">
-      <button class="btn-icon-nav" id="btnSettings">
-        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-      </button>
-      <button class="btn-icon-nav" onclick="parent.lockVaultToNotes ? parent.lockVaultToNotes() : location.reload()">
-        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-        <span>Lock</span>
-      </button>
-    </div>
+    <button class="btn-lock" onclick="parent.lockVaultToNotes ? parent.lockVaultToNotes() : location.reload()">
+      <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+      <span>Lock</span>
+    </button>
   </div>
 
   <!-- Dual Status: Weather & Distance -->
@@ -123,174 +137,266 @@
     </div>
   </div>
 
-  <!-- Interactive Calendar -->
+  <!-- Dynamic Real Calendar with Month/Year Navigation -->
   <div class="calendar-section">
-    <div class="calendar-header">
-      <h3 id="calendarMonthLabel">November 2026</h3>
-      <button class="btn-small-add" onclick="addNewMemoryPrompt()">+ Add Date</button>
+    <div class="calendar-nav">
+      <button class="nav-btn" onclick="changeMonth(-1)">‹</button>
+      <h3 id="calendarMonthTitle">November 2026</h3>
+      <button class="nav-btn" onclick="changeMonth(1)">›</button>
     </div>
     <div class="calendar-grid">
       <div class="day-label">M</div><div class="day-label">T</div><div class="day-label">W</div>
       <div class="day-label">T</div><div class="day-label">F</div><div class="day-label">S</div><div class="day-label">S</div>
-      <!-- Days Grid generated by JavaScript -->
-      <div id="calendarDays" style="display: contents;"></div>
+      <div id="calendarDaysGrid" style="display: contents;"></div>
     </div>
     <div id="memoryCard" class="memory-card">
       <div id="memoryTitle" class="memory-title"></div>
       <div id="memoryDesc" class="memory-desc"></div>
+      <button class="btn-mini-del" id="btnDeleteMemory">Delete Entry</button>
     </div>
   </div>
 
-  <!-- Countdowns -->
+  <!-- Multiple Countdowns List -->
   <div class="section-wrap">
     <div class="section-head">
       <span>Countdowns</span>
-      <button class="btn-small-add" onclick="addNewCountdownPrompt()">+ Add New</button>
+      <button class="btn-small-add" onclick="openCountdownModal()">+ Add New</button>
     </div>
-    <div id="countdownsContainer">
-      <div class="timer-box">
-        <div class="timer-title">Special Meeting • 3 Nov, 8:00 AM</div>
-        <div class="timer-digits" id="timerMain">00<span>d</span> 00<span>h</span> 00<span>m</span> 00<span>s</span></div>
-      </div>
-    </div>
+    <div id="countdownsContainer"></div>
   </div>
 
-  <!-- Send Hug with Floating Reaction Bar -->
-  <div class="section-wrap">
-    <div class="hug-center">
-      <div id="reactionBar" class="reaction-bar">
-        <span class="reaction-item" onclick="triggerReaction('💖 Pure Love')">💖</span>
-        <span class="reaction-item" onclick="triggerReaction('🫂 Warm Hug')">🫂</span>
-        <span class="reaction-item" onclick="triggerReaction('✨ Magic Vibes')">✨</span>
-        <span class="reaction-item" onclick="triggerReaction('🌸 Thinking of You')">🌸</span>
-      </div>
-      <button class="btn-hug" onclick="toggleReactions()">Send Reaction / Hug</button>
-      <div id="reactionNotify" class="reaction-notify"></div>
-    </div>
-  </div>
-
-  <!-- Mutual Spotify Suggestions -->
+  <!-- Mutual Spotify Suggestions with Custom Colors -->
   <div class="section-wrap">
     <div class="section-head">
       <span>Suggested Tracks</span>
     </div>
-    <div class="spotify-item">
-      <div style="font-size: 11px; color: var(--lavender); font-weight: 600;">BHANU'S PICK</div>
-      <input type="text" class="spotify-input" id="songBhanu" placeholder="Paste Spotify track link..." onchange="saveSong('bhanu', this.value)">
+    <div class="spotify-item-bhanu">
+      <div class="bhanu-tag">BHANU'S PICK</div>
+      <input type="text" class="spotify-input" id="songBhanu" placeholder="Paste Spotify track link..." onchange="saveTrack('bhanu', this.value)">
     </div>
-    <div class="spotify-item">
-      <div style="font-size: 11px; color: var(--yellow-peach); font-weight: 600;">GUN'S PICK</div>
-      <input type="text" class="spotify-input" id="songGun" placeholder="Paste Spotify track link..." onchange="saveSong('gun', this.value)">
+    <div class="spotify-item-gun">
+      <div class="gun-tag">GUN'S PICK</div>
+      <input type="text" class="spotify-input" id="songGun" placeholder="Paste Spotify track link..." onchange="saveTrack('gun', this.value)">
+    </div>
+  </div>
+
+  <!-- Modal for Adding/Editing Date Memory -->
+  <div id="dateModal" class="modal-overlay">
+    <div class="modal-box">
+      <h4 id="modalDateLabel">Add Note for Date</h4>
+      <input type="text" id="inputHeading" class="modal-input" placeholder="Main Heading (Title)">
+      <textarea id="inputSubtitle" class="modal-input" style="height: 70px; resize: none;" placeholder="Subtitle / Sweet details..."></textarea>
+      <select id="selectType" class="modal-select">
+        <option value="special">💗 Super Special (Pink-Red)</option>
+        <option value="effort">🌻 Sweet Effort (Yellow-Peach)</option>
+      </select>
+      <div class="modal-actions">
+        <button class="btn-modal-cancel" onclick="closeDateModal()">Cancel</button>
+        <button class="btn-modal-save" onclick="saveDateMemory()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for Adding New Countdown -->
+  <div id="countdownModal" class="modal-overlay">
+    <div class="modal-box">
+      <h4>New Countdown</h4>
+      <input type="text" id="inputCdTitle" class="modal-input" placeholder="Event Name (e.g. Next Meet)">
+      <input type="datetime-local" id="inputCdTarget" class="modal-input">
+      <div class="modal-actions">
+        <button class="btn-modal-cancel" onclick="closeCountdownModal()">Cancel</button>
+        <button class="btn-modal-save" onclick="saveNewCountdown()">Add Timer</button>
+      </div>
     </div>
   </div>
 
   <script>
-    // 1. Data Store
-    let memories = JSON.parse(localStorage.getItem('vault_memories') || JSON.stringify({
-      3: { type: 'special', title: '3 November — Special Day', desc: 'A very special moment to remember and celebrate together.' },
-      14: { type: 'effort', title: '14 November — Thoughtful Evening', desc: 'A cozy coffee conversation filled with sweet efforts.' }
+    // --- 1. Instagram-style Floating Hearts Burst on Open ---
+    function burstHearts() {
+      const heartTypes = ['💖', '💗', '💕', '✨', '🌸'];
+      for (let i = 0; i < 18; i++) {
+        setTimeout(() => {
+          const el = document.createElement('div');
+          el.className = 'heart-particle';
+          el.innerText = heartTypes[Math.floor(Math.random() * heartTypes.length)];
+          el.style.left = (Math.random() * 85 + 5) + 'vw';
+          el.style.fontSize = (Math.random() * 16 + 18) + 'px';
+          el.style.animationDuration = (Math.random() * 1.5 + 2) + 's';
+          document.body.appendChild(el);
+          setTimeout(() => el.remove(), 3500);
+        }, i * 120);
+      }
+    }
+    burstHearts();
+
+    // --- 2. Dynamic Calendar System ---
+    let viewYear = 2026;
+    let viewMonth = 10; // November (0-based)
+    let selectedDateKey = null;
+
+    let memories = JSON.parse(localStorage.getItem('vault_memories_v2') || JSON.stringify({
+      "2026-11-03": { type: 'special', heading: 'Special Day', subtitle: 'A very special moment to remember and celebrate together.' },
+      "2026-11-14": { type: 'effort', heading: 'Thoughtful Evening', subtitle: 'A cozy coffee conversation filled with sweet efforts.' }
     }));
 
-    // 2. Calendar Logic
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    function changeMonth(delta) {
+      viewMonth += delta;
+      if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+      if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+      renderCalendar();
+      document.getElementById('memoryCard').style.display = 'none';
+    }
+
     function renderCalendar() {
-      const daysContainer = document.getElementById('calendarDays');
-      daysContainer.innerHTML = '';
-      
-      // November 2026 starts on Sunday (index 6 if Mon=0)
-      for (let i = 0; i < 6; i++) {
+      document.getElementById('calendarMonthTitle').innerText = `${monthNames[viewMonth]} ${viewYear}`;
+      const grid = document.getElementById('calendarDaysGrid');
+      grid.innerHTML = '';
+
+      const firstDay = new Date(viewYear, viewMonth, 1).getDay();
+      const offset = (firstDay === 0 ? 7 : firstDay) - 1; // Mon = 0
+      const totalDays = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+      for (let i = 0; i < offset; i++) {
         const empty = document.createElement('div');
-        daysContainer.appendChild(empty);
+        grid.appendChild(empty);
       }
 
-      for (let d = 1; d <= 30; d++) {
+      for (let d = 1; d <= totalDays; d++) {
         const cell = document.createElement('div');
         cell.className = 'date-cell';
         cell.innerText = d;
+        const dateKey = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
 
-        if (memories[d]) {
-          cell.classList.add(memories[d].type === 'special' ? 'circle-special' : 'circle-effort');
+        if (memories[dateKey]) {
+          cell.classList.add(memories[dateKey].type === 'special' ? 'circle-special' : 'circle-effort');
         }
 
-        cell.onclick = () => selectDate(d, cell);
-        daysContainer.appendChild(cell);
+        cell.onclick = () => onDateClicked(dateKey, d, cell);
+        grid.appendChild(cell);
       }
     }
 
-    function selectDate(day, element) {
+    function onDateClicked(dateKey, day, cell) {
       document.querySelectorAll('.date-cell').forEach(c => c.classList.remove('active'));
-      const card = document.getElementById('memoryCard');
-      
-      if (memories[day]) {
-        element.classList.add('active');
+      selectedDateKey = dateKey;
+
+      if (memories[dateKey]) {
+        cell.classList.add('active');
+        const card = document.getElementById('memoryCard');
         card.style.display = 'block';
-        card.className = 'memory-card ' + (memories[day].type === 'special' ? 'special-card' : 'effort-card');
-        document.getElementById('memoryTitle').innerText = memories[day].title;
-        document.getElementById('memoryDesc').innerText = memories[day].desc;
+        card.className = 'memory-card ' + (memories[dateKey].type === 'special' ? 'special-card' : 'effort-card');
+        document.getElementById('memoryTitle').innerText = `${day} ${monthNames[viewMonth]}: ${memories[dateKey].heading}`;
+        document.getElementById('memoryDesc').innerText = memories[dateKey].subtitle;
+        
+        document.getElementById('btnDeleteMemory').onclick = () => {
+          delete memories[dateKey];
+          localStorage.setItem('vault_memories_v2', JSON.stringify(memories));
+          card.style.display = 'none';
+          renderCalendar();
+        };
       } else {
-        card.style.display = 'none';
+        openDateModal(dateKey, day);
       }
     }
 
-    function addNewMemoryPrompt() {
-      const day = prompt("Enter Day of November (1-30):");
-      if (!day || isNaN(day) || day < 1 || day > 30) return;
-      const type = confirm("Press OK for Super Special (Pink-Red), or Cancel for Sweet Effort (Yellow-Peach)") ? 'special' : 'effort';
-      const title = prompt("Enter Title for this date:");
-      const desc = prompt("Enter short memory note:");
+    function openDateModal(dateKey, day) {
+      selectedDateKey = dateKey;
+      document.getElementById('modalDateLabel').innerText = `Add Note • ${day} ${monthNames[viewMonth]} ${viewYear}`;
+      document.getElementById('inputHeading').value = '';
+      document.getElementById('inputSubtitle').value = '';
+      document.getElementById('dateModal').style.display = 'flex';
+    }
 
-      memories[day] = { type, title: title || `Day ${day}`, desc: desc || '' };
-      localStorage.setItem('vault_memories', JSON.stringify(memories));
+    function closeDateModal() {
+      document.getElementById('dateModal').style.display = 'none';
+    }
+
+    function saveDateMemory() {
+      const heading = document.getElementById('inputHeading').value.trim();
+      const subtitle = document.getElementById('inputSubtitle').value.trim();
+      const type = document.getElementById('selectType').value;
+
+      if (!heading) return;
+
+      memories[selectedDateKey] = { type, heading, subtitle };
+      localStorage.setItem('vault_memories_v2', JSON.stringify(memories));
+      closeDateModal();
       renderCalendar();
     }
 
-    // 3. Countdown Timer (3 Nov 8:00 AM 2026)
-    const targetTime = new Date('2026-11-03T08:00:00').getTime();
+    // --- 3. Multiple Real Countdowns ---
+    let countdowns = JSON.parse(localStorage.getItem('vault_countdowns_v2') || JSON.stringify([
+      { id: 1, title: 'Special Meeting', target: '2026-11-03T08:00:00' }
+    ]));
 
-    function updateTimer() {
+    function renderCountdowns() {
+      const container = document.getElementById('countdownsContainer');
+      container.innerHTML = '';
+
+      countdowns.forEach(item => {
+        const box = document.createElement('div');
+        box.className = 'timer-box';
+        box.innerHTML = `
+          <div class="timer-info">
+            <div class="timer-title">${item.title} • ${new Date(item.target).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}, 8:00 AM</div>
+            <div class="timer-digits" id="timer-${item.id}">Calculating...</div>
+          </div>
+          <button class="btn-mini-del" onclick="deleteCountdown(${item.id})">✕</button>
+        `;
+        container.appendChild(box);
+      });
+    }
+
+    function updateTimers() {
       const now = new Date().getTime();
-      const diff = targetTime - now;
+      countdowns.forEach(item => {
+        const diff = new Date(item.target).getTime() - now;
+        const el = document.getElementById(`timer-${item.id}`);
+        if (!el) return;
 
-      if (diff <= 0) {
-        document.getElementById('timerMain').innerHTML = "Moments Arrived!";
-        return;
-      }
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const mins = Math.floor((diff / (1000 * 60)) % 60);
-      const secs = Math.floor((diff / 1000) % 60);
-
-      document.getElementById('timerMain').innerHTML = 
-        `${days}<span>d</span> ${String(hours).padStart(2, '0')}<span>h</span> ${String(mins).padStart(2, '0')}<span>m</span> ${String(secs).padStart(2, '0')}<span>s</span>`;
+        if (diff <= 0) {
+          el.innerHTML = "Moments Arrived!";
+        } else {
+          const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+          const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+          const m = Math.floor((diff / (1000 * 60)) % 60);
+          const s = Math.floor((diff / 1000) % 60);
+          el.innerHTML = `${d}<span>d</span> ${String(h).padStart(2,'0')}<span>h</span> ${String(m).padStart(2,'0')}<span>m</span> ${String(s).padStart(2,'0')}<span>s</span>`;
+        }
+      });
     }
-    setInterval(updateTimer, 1000);
-    updateTimer();
+    setInterval(updateTimers, 1000);
 
-    function addNewCountdownPrompt() {
-      alert("New Countdown slot ready! You can add multiple dates in next update.");
+    function openCountdownModal() { document.getElementById('countdownModal').style.display = 'flex'; }
+    function closeCountdownModal() { document.getElementById('countdownModal').style.display = 'none'; }
+    function saveNewCountdown() {
+      const title = document.getElementById('inputCdTitle').value.trim();
+      const target = document.getElementById('inputCdTarget').value;
+      if (!title || !target) return;
+
+      countdowns.push({ id: Date.now(), title, target });
+      localStorage.setItem('vault_countdowns_v2', JSON.stringify(countdowns));
+      closeCountdownModal();
+      renderCountdowns();
+      updateTimers();
+    }
+    function deleteCountdown(id) {
+      countdowns = countdowns.filter(c => c.id !== id);
+      localStorage.setItem('vault_countdowns_v2', JSON.stringify(countdowns));
+      renderCountdowns();
     }
 
-    // 4. Reactions
-    function toggleReactions() {
-      const bar = document.getElementById('reactionBar');
-      bar.classList.toggle('show');
-    }
+    // --- 4. Spotify Tracks ---
+    function saveTrack(who, val) { localStorage.setItem('track_' + who, val); }
+    document.getElementById('songBhanu').value = localStorage.getItem('track_bhanu') || '';
+    document.getElementById('songGun').value = localStorage.getItem('track_gun') || '';
 
-    function triggerReaction(text) {
-      document.getElementById('reactionBar').classList.remove('show');
-      const notify = document.getElementById('reactionNotify');
-      notify.innerText = `Sent: ${text}`;
-      setTimeout(() => { notify.innerText = ''; }, 3000);
-    }
-
-    // 5. Spotify storage
-    function saveSong(who, url) {
-      localStorage.setItem('spotify_' + who, url);
-    }
-    document.getElementById('songBhanu').value = localStorage.getItem('spotify_bhanu') || '';
-    document.getElementById('songGun').value = localStorage.getItem('spotify_gun') || '';
-
+    // Init
     renderCalendar();
+    renderCountdowns();
+    updateTimers();
   </script>
 </body>
 </html>
