@@ -5,167 +5,292 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Secret Vault</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  body {
-    background: radial-gradient(circle at top, #1e1b4b 0%, #0f172a 60%, #090d16 100%);
-    color: #f8fafc;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-    padding: 20px 16px 80px 16px;
+  :root {
+    --bg-dark: #0b0f19;
+    --card-bg: rgba(255, 255, 255, 0.04);
+    --border-color: rgba(255, 255, 255, 0.08);
+    --pink-red: #f43f5e;
+    --pink-red-glow: rgba(244, 63, 94, 0.35);
+    --yellow-peach: #fbbf24;
+    --yellow-peach-glow: rgba(251, 191, 36, 0.35);
+    --lavender: #c084fc;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
   }
-  .header-card {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(234, 179, 8, 0.3);
-    border-radius: 24px;
-    padding: 20px;
-    text-align: center;
-    backdrop-filter: blur(10px);
-    margin-bottom: 20px;
-    box-shadow: 0 8px 32px rgba(147, 51, 234, 0.15);
-  }
-  .title {
-    font-size: 24px;
-    font-weight: 800;
-    background: linear-gradient(135deg, #facc15, #c084fc, #f472b6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .subtitle { font-size: 13px; color: #cbd5e1; margin-top: 6px; }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  body { background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, var(--bg-dark) 70%); color: var(--text-main); min-height: 100vh; padding: 18px 16px 80px 16px; }
+
+  /* SVG Icons */
+  .icon { width: 18px; height: 18px; vertical-align: middle; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Top Navigation Bar */
+  .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+  .title-wrap h2 { font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
+  .title-wrap p { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .btn-icon-nav { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 14px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px; font-size: 12px; cursor: pointer; }
+
+  /* Dual Status (Weather & Distance) */
+  .grid-dual { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .status-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 18px; padding: 14px; }
+  .status-header { display: flex; justify-content: space-between; font-size: 11px; color: var(--lavender); font-weight: 600; margin-bottom: 8px; }
+  .status-value { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+  .status-sub { font-size: 11px; color: var(--text-muted); }
+
+  /* Interactive Calendar */
+  .calendar-section { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 22px; padding: 18px; margin-bottom: 20px; }
+  .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .calendar-header h3 { font-size: 15px; font-weight: 600; }
+  .btn-small-add { background: rgba(192, 132, 252, 0.15); border: 1px solid var(--lavender); color: var(--lavender); font-size: 11px; padding: 4px 10px; border-radius: 12px; cursor: pointer; }
+  .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
+  .day-label { font-size: 11px; color: var(--text-muted); padding-bottom: 6px; font-weight: 600; }
+  .date-cell { width: 34px; height: 34px; line-height: 34px; margin: 0 auto; border-radius: 50%; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.25s ease; border: 1.5px solid transparent; }
   
-  /* Sunflower & Lavender Garden */
-  .garden {
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-end;
-    margin: 20px 0;
-    font-size: 28px;
-    filter: drop-shadow(0 2px 8px rgba(250, 204, 21, 0.4));
-  }
-  
-  /* Dual Cats Play Area */
-  .cats-container {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(192, 132, 252, 0.25);
-    border-radius: 20px;
-    padding: 16px;
-    text-align: center;
-    margin-bottom: 18px;
-  }
-  .cats-stage {
-    display: flex;
-    justify-content: space-around;
-    font-size: 44px;
-    margin: 12px 0;
-  }
-  .cat-bounce {
-    animation: bounce 1.8s infinite ease-in-out;
-    display: inline-block;
-  }
-  .cat-bounce-reverse {
-    animation: bounce 1.8s infinite ease-in-out 0.9s;
-    display: inline-block;
-  }
-  @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-12px) rotate(4deg); }
-  }
+  /* Outline vs Filled Circle Styles */
+  .circle-special { border-color: var(--pink-red); color: #fff; box-shadow: 0 0 10px var(--pink-red-glow); }
+  .circle-effort { border-color: var(--yellow-peach); color: #fff; box-shadow: 0 0 10px var(--yellow-peach-glow); }
+  .circle-special.active { background: linear-gradient(135deg, #f43f5e, #be123c); border-color: transparent; }
+  .circle-effort.active { background: linear-gradient(135deg, #fbbf24, #d97706); border-color: transparent; color: #000; font-weight: 700; }
 
-  /* Cute Panda Hug Button */
-  .hug-btn {
-    background: linear-gradient(135deg, #a855f7, #ec4899);
-    border: none;
-    color: white;
-    padding: 12px 24px;
-    border-radius: 30px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
-    transition: transform 0.2s;
-  }
-  .hug-btn:active { transform: scale(0.95); }
+  /* Date Memory Display Card */
+  .memory-card { margin-top: 14px; border-radius: 16px; padding: 14px; display: none; animation: fadeIn 0.3s ease; }
+  .memory-card.special-card { background: rgba(244, 63, 94, 0.1); border: 1px solid var(--pink-red); }
+  .memory-card.effort-card { background: rgba(251, 191, 36, 0.1); border: 1px solid var(--yellow-peach); }
+  .memory-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .memory-desc { font-size: 12px; color: #e2e8f0; line-height: 1.4; }
 
-  /* Countdown & Weather Cards */
-  .grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 18px;
-  }
-  .mini-card {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 18px;
-    padding: 14px;
-    text-align: center;
-  }
-  .mini-card h4 { font-size: 13px; color: #facc15; margin-bottom: 4px; }
-  .mini-card p { font-size: 18px; font-weight: 700; color: #f1f5f9; }
+  /* Countdowns */
+  .section-wrap { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 18px; margin-bottom: 20px; }
+  .section-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 14px; font-weight: 600; }
+  .timer-box { background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: 14px; padding: 12px; margin-bottom: 10px; }
+  .timer-title { font-size: 12px; color: var(--lavender); margin-bottom: 6px; }
+  .timer-digits { font-size: 20px; font-weight: 800; letter-spacing: 1px; color: #fff; }
+  .timer-digits span { font-size: 11px; font-weight: 400; color: var(--text-muted); margin-right: 6px; }
 
-  /* Chai & Coffee */
-  .cups {
-    font-size: 26px;
-    margin-top: 6px;
-  }
+  /* Hug & Reactions */
+  .hug-center { text-align: center; padding: 10px 0; position: relative; }
+  .btn-hug { background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none; color: white; padding: 12px 28px; border-radius: 25px; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 18px rgba(236, 72, 153, 0.3); }
+  .reaction-bar { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%) scale(0.8); opacity: 0; pointer-events: none; background: rgba(30, 27, 75, 0.95); border: 1px solid var(--border-color); padding: 8px 14px; border-radius: 30px; display: flex; gap: 14px; transition: all 0.25s ease; }
+  .reaction-bar.show { opacity: 1; pointer-events: auto; transform: translateX(-50%) scale(1); }
+  .reaction-item { font-size: 20px; cursor: pointer; transition: transform 0.15s; }
+  .reaction-item:hover { transform: scale(1.3); }
+  .reaction-notify { font-size: 12px; color: var(--lavender); margin-top: 10px; height: 16px; }
+
+  /* Spotify Suggestion Tabs */
+  .spotify-item { background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 14px; padding: 12px; margin-bottom: 10px; }
+  .spotify-input { width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--border-color); color: #fff; font-size: 12px; padding: 6px 0; margin-top: 6px; outline: none; }
+  .spotify-input::placeholder { color: var(--text-muted); }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
 
-  <div class="header-card">
-    <div class="title">Bhanu & Gun Space 🌻💜</div>
-    <div class="subtitle">Protected by My Notes Stealth Security</div>
-  </div>
-
-  <div class="garden">
-    <span>🌻</span><span>💜</span><span>🌻</span><span>💜</span><span>🌻</span>
-  </div>
-
-  <div class="cats-container">
-    <p style="font-size: 14px; color: #e2e8f0; font-weight: 600;">Playful Cats</p>
-    <div class="cats-stage">
-      <div class="cat-bounce" title="Gun">🐱</div>
-      <div style="font-size: 24px; align-self: center;">☕ 🍵</div>
-      <div class="cat-bounce-reverse" title="Bhanu">🐾</div>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="title-wrap">
+      <h2>Bhanu & Gun Space</h2>
+      <p>Synchronized Space</p>
     </div>
-    <button class="hug-btn" onclick="sendHug()">Send Panda Hug 🐼💖</button>
-    <div id="hugMessage" style="margin-top: 10px; font-size: 13px; color: #f472b6;"></div>
-  </div>
-
-  <div class="grid-2">
-    <div class="mini-card">
-      <h4>Countdown</h4>
-      <p id="countdown">Loading...</p>
-    </div>
-    <div class="mini-card">
-      <h4>Weather & Vibes</h4>
-      <p>Sunny 27°C ☀️</p>
+    <div style="display: flex; gap: 8px;">
+      <button class="btn-icon-nav" id="btnSettings">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+      </button>
+      <button class="btn-icon-nav" onclick="parent.lockVaultToNotes ? parent.lockVaultToNotes() : location.reload()">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        <span>Lock</span>
+      </button>
     </div>
   </div>
 
-  <div class="mini-card" style="margin-top: 10px;">
-    <h4>Playlist & Radio</h4>
-    <p style="font-size: 14px; color: #c084fc; margin-top: 4px;">🎵 Favorite Lo-Fi & Melodies</p>
+  <!-- Dual Status: Weather & Distance -->
+  <div class="grid-dual">
+    <div class="status-card">
+      <div class="status-header">
+        <span>BHANU</span>
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line></svg>
+      </div>
+      <div class="status-value">28°C Clear</div>
+      <div class="status-sub">Location: Rajasthan</div>
+    </div>
+    <div class="status-card">
+      <div class="status-header">
+        <span>GUN</span>
+        <svg class="icon" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path></svg>
+      </div>
+      <div class="status-value">26°C Pleasant</div>
+      <div class="status-sub">Distance: 410 km</div>
+    </div>
+  </div>
+
+  <!-- Interactive Calendar -->
+  <div class="calendar-section">
+    <div class="calendar-header">
+      <h3 id="calendarMonthLabel">November 2026</h3>
+      <button class="btn-small-add" onclick="addNewMemoryPrompt()">+ Add Date</button>
+    </div>
+    <div class="calendar-grid">
+      <div class="day-label">M</div><div class="day-label">T</div><div class="day-label">W</div>
+      <div class="day-label">T</div><div class="day-label">F</div><div class="day-label">S</div><div class="day-label">S</div>
+      <!-- Days Grid generated by JavaScript -->
+      <div id="calendarDays" style="display: contents;"></div>
+    </div>
+    <div id="memoryCard" class="memory-card">
+      <div id="memoryTitle" class="memory-title"></div>
+      <div id="memoryDesc" class="memory-desc"></div>
+    </div>
+  </div>
+
+  <!-- Countdowns -->
+  <div class="section-wrap">
+    <div class="section-head">
+      <span>Countdowns</span>
+      <button class="btn-small-add" onclick="addNewCountdownPrompt()">+ Add New</button>
+    </div>
+    <div id="countdownsContainer">
+      <div class="timer-box">
+        <div class="timer-title">Special Meeting • 3 Nov, 8:00 AM</div>
+        <div class="timer-digits" id="timerMain">00<span>d</span> 00<span>h</span> 00<span>m</span> 00<span>s</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Send Hug with Floating Reaction Bar -->
+  <div class="section-wrap">
+    <div class="hug-center">
+      <div id="reactionBar" class="reaction-bar">
+        <span class="reaction-item" onclick="triggerReaction('💖 Pure Love')">💖</span>
+        <span class="reaction-item" onclick="triggerReaction('🫂 Warm Hug')">🫂</span>
+        <span class="reaction-item" onclick="triggerReaction('✨ Magic Vibes')">✨</span>
+        <span class="reaction-item" onclick="triggerReaction('🌸 Thinking of You')">🌸</span>
+      </div>
+      <button class="btn-hug" onclick="toggleReactions()">Send Reaction / Hug</button>
+      <div id="reactionNotify" class="reaction-notify"></div>
+    </div>
+  </div>
+
+  <!-- Mutual Spotify Suggestions -->
+  <div class="section-wrap">
+    <div class="section-head">
+      <span>Suggested Tracks</span>
+    </div>
+    <div class="spotify-item">
+      <div style="font-size: 11px; color: var(--lavender); font-weight: 600;">BHANU'S PICK</div>
+      <input type="text" class="spotify-input" id="songBhanu" placeholder="Paste Spotify track link..." onchange="saveSong('bhanu', this.value)">
+    </div>
+    <div class="spotify-item">
+      <div style="font-size: 11px; color: var(--yellow-peach); font-weight: 600;">GUN'S PICK</div>
+      <input type="text" class="spotify-input" id="songGun" placeholder="Paste Spotify track link..." onchange="saveSong('gun', this.value)">
+    </div>
   </div>
 
   <script>
-    function sendHug() {
-      const msg = document.getElementById('hugMessage');
-      msg.innerText = "🐼 Warm cuddles & hugs sent across distance! ✨";
-      setTimeout(() => { msg.innerText = ""; }, 3500);
+    // 1. Data Store
+    let memories = JSON.parse(localStorage.getItem('vault_memories') || JSON.stringify({
+      3: { type: 'special', title: '3 November — Special Day', desc: 'A very special moment to remember and celebrate together.' },
+      14: { type: 'effort', title: '14 November — Thoughtful Evening', desc: 'A cozy coffee conversation filled with sweet efforts.' }
+    }));
+
+    // 2. Calendar Logic
+    function renderCalendar() {
+      const daysContainer = document.getElementById('calendarDays');
+      daysContainer.innerHTML = '';
+      
+      // November 2026 starts on Sunday (index 6 if Mon=0)
+      for (let i = 0; i < 6; i++) {
+        const empty = document.createElement('div');
+        daysContainer.appendChild(empty);
+      }
+
+      for (let d = 1; d <= 30; d++) {
+        const cell = document.createElement('div');
+        cell.className = 'date-cell';
+        cell.innerText = d;
+
+        if (memories[d]) {
+          cell.classList.add(memories[d].type === 'special' ? 'circle-special' : 'circle-effort');
+        }
+
+        cell.onclick = () => selectDate(d, cell);
+        daysContainer.appendChild(cell);
+      }
     }
 
-    function updateCountdown() {
-      const target = new Date();
-      target.setDate(target.getDate() + 7);
-      const now = new Date();
-      const diff = target - now;
+    function selectDate(day, element) {
+      document.querySelectorAll('.date-cell').forEach(c => c.classList.remove('active'));
+      const card = document.getElementById('memoryCard');
+      
+      if (memories[day]) {
+        element.classList.add('active');
+        card.style.display = 'block';
+        card.className = 'memory-card ' + (memories[day].type === 'special' ? 'special-card' : 'effort-card');
+        document.getElementById('memoryTitle').innerText = memories[day].title;
+        document.getElementById('memoryDesc').innerText = memories[day].desc;
+      } else {
+        card.style.display = 'none';
+      }
+    }
+
+    function addNewMemoryPrompt() {
+      const day = prompt("Enter Day of November (1-30):");
+      if (!day || isNaN(day) || day < 1 || day > 30) return;
+      const type = confirm("Press OK for Super Special (Pink-Red), or Cancel for Sweet Effort (Yellow-Peach)") ? 'special' : 'effort';
+      const title = prompt("Enter Title for this date:");
+      const desc = prompt("Enter short memory note:");
+
+      memories[day] = { type, title: title || `Day ${day}`, desc: desc || '' };
+      localStorage.setItem('vault_memories', JSON.stringify(memories));
+      renderCalendar();
+    }
+
+    // 3. Countdown Timer (3 Nov 8:00 AM 2026)
+    const targetTime = new Date('2026-11-03T08:00:00').getTime();
+
+    function updateTimer() {
+      const now = new Date().getTime();
+      const diff = targetTime - now;
+
+      if (diff <= 0) {
+        document.getElementById('timerMain').innerHTML = "Moments Arrived!";
+        return;
+      }
+
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
       const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      document.getElementById('countdown').innerText = days + "d " + hours + "h left";
+      const mins = Math.floor((diff / (1000 * 60)) % 60);
+      const secs = Math.floor((diff / 1000) % 60);
+
+      document.getElementById('timerMain').innerHTML = 
+        `${days}<span>d</span> ${String(hours).padStart(2, '0')}<span>h</span> ${String(mins).padStart(2, '0')}<span>m</span> ${String(secs).padStart(2, '0')}<span>s</span>`;
     }
-    updateCountdown();
-    setInterval(updateCountdown, 60000);
+    setInterval(updateTimer, 1000);
+    updateTimer();
+
+    function addNewCountdownPrompt() {
+      alert("New Countdown slot ready! You can add multiple dates in next update.");
+    }
+
+    // 4. Reactions
+    function toggleReactions() {
+      const bar = document.getElementById('reactionBar');
+      bar.classList.toggle('show');
+    }
+
+    function triggerReaction(text) {
+      document.getElementById('reactionBar').classList.remove('show');
+      const notify = document.getElementById('reactionNotify');
+      notify.innerText = `Sent: ${text}`;
+      setTimeout(() => { notify.innerText = ''; }, 3000);
+    }
+
+    // 5. Spotify storage
+    function saveSong(who, url) {
+      localStorage.setItem('spotify_' + who, url);
+    }
+    document.getElementById('songBhanu').value = localStorage.getItem('spotify_bhanu') || '';
+    document.getElementById('songGun').value = localStorage.getItem('spotify_gun') || '';
+
+    renderCalendar();
   </script>
 </body>
 </html>
