@@ -342,7 +342,7 @@ let viewMonth = now.getMonth();
 
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-    function changeMonth(delta) {
+  function changeMonth(delta) {
       viewMonth += delta;
       if (viewMonth > 11) { viewMonth = 0; viewYear++; }
       if (viewMonth < 0) { viewMonth = 11; viewYear--; }
@@ -350,7 +350,83 @@ let viewMonth = now.getMonth();
       document.getElementById('memoryCard').style.display = 'none';
     }
 
-   
+    const eventPriority = ['unforgettable', 'celebration', 'sweet', 'whispers', 'smiles', 'special', 'effort'];
+
+    function renderCalendar() {
+      document.getElementById('calendarMonthTitle').innerText = `${monthNames[viewMonth]} ${viewYear}`;
+      const grid = document.getElementById('calendarDaysGrid');
+      grid.innerHTML = '';
+
+      const firstDay = new Date(viewYear, viewMonth, 1).getDay();
+      const offset = (firstDay === 0 ? 7 : firstDay) - 1; // Mon = 0
+      const totalDays = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+      for (let i = 0; i < offset; i++) {
+        const empty = document.createElement('div');
+        grid.appendChild(empty);
+      }
+
+      for (let d = 1; d <= totalDays; d++) {
+        const cell = document.createElement('div');
+        cell.className = 'date-cell';
+        
+        const dateKey = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+        const dayEvents = memories[dateKey] ? (Array.isArray(memories[dateKey]) ? memories[dateKey] : [memories[dateKey]]) : [];
+
+        // Date Number
+        const numSpan = document.createElement('span');
+        numSpan.innerText = d;
+        cell.appendChild(numSpan);
+
+        if (dayEvents.length > 0) {
+          // 1. Superior Glow Decision
+          let superior = dayEvents[0];
+          for (const p of eventPriority) {
+            const found = dayEvents.find(e => (e.type || '') === p);
+            if (found) { superior = found; break; }
+          }
+
+          if (superior.type === 'unforgettable' || superior.type === 'special') {
+            cell.style.background = 'radial-gradient(circle, rgba(255,42,133,0.38) 0%, rgba(255,42,133,0.08) 75%)';
+            cell.style.border = '1px solid #ff2a85';
+            cell.style.boxShadow = '0 0 10px rgba(255,42,133,0.45)';
+          } else if (superior.type === 'celebration') {
+            cell.style.background = 'radial-gradient(circle, rgba(245,158,11,0.38) 0%, rgba(245,158,11,0.08) 75%)';
+            cell.style.border = '1px solid #f59e0b';
+            cell.style.boxShadow = '0 0 10px rgba(245,158,11,0.45)';
+          } else if (superior.type === 'sweet' || superior.type === 'effort') {
+            cell.style.background = 'radial-gradient(circle, rgba(250,204,21,0.3) 0%, rgba(250,204,21,0.06) 75%)';
+            cell.style.border = '1px solid #facc15';
+          } else if (superior.type === 'whispers') {
+            cell.style.background = 'radial-gradient(circle, rgba(192,132,252,0.3) 0%, rgba(192,132,252,0.06) 75%)';
+            cell.style.border = '1px solid #c084fc';
+          } else if (superior.type === 'smiles') {
+            cell.style.background = 'radial-gradient(circle, rgba(45,212,191,0.3) 0%, rgba(45,212,191,0.06) 75%)';
+            cell.style.border = '1px solid #2dd4bf';
+          }
+
+          // 2. Dots for Multiple Events
+          if (dayEvents.length > 1) {
+            const dotsWrap = document.createElement('div');
+            dotsWrap.className = 'event-dots-container';
+            dayEvents.slice(1).forEach(ev => {
+              const dot = document.createElement('span');
+              let dotClass = 'dot-sweet';
+              if (ev.type === 'unforgettable' || ev.type === 'special') dotClass = 'dot-unforgettable';
+              else if (ev.type === 'celebration') dotClass = 'dot-celebration';
+              else if (ev.type === 'whispers') dotClass = 'dot-whispers';
+              else if (ev.type === 'smiles') dotClass = 'dot-smiles';
+              dot.className = `event-dot ${dotClass}`;
+              dotsWrap.appendChild(dot);
+            });
+            cell.appendChild(dotsWrap);
+          }
+        }
+
+        cell.onclick = () => onDateClicked(dateKey, d, cell);
+        grid.appendChild(cell);
+      }
+    }
 
   function onDateClicked(dateKey, day, cell) {
       document.querySelectorAll('.date-cell').forEach(c => c.classList.remove('active'));
