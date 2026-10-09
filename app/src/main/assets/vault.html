@@ -216,7 +216,46 @@
 const SUPABASE_URL = 'https://cwrjrpfvyqjujnxohhpg.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3cmpycGZ2eXFqdWpueG9oaHBnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE0NzQzMjcsImV4cCI6MjEwNzA1MDMyN30.U25FoTSwY53kie1pQehE0WFf58Z8f-QpjMMoS-aHKN8 '; 
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-const VAULT_KEY = 'bhanu_gun_secret'; 
+const VAULT_KEY = 'bhanu_gun_secret';
+    // --- Cloud Sync Helpers ---
+    async function syncToCloud(category, data) {
+      try {
+        await db.from('vault_items').delete().eq('category', category).eq('secret_hash', VAULT_KEY);
+        await db.from('vault_items').insert([{
+          category: category,
+          payload: typeof data === 'string' ? data : JSON.stringify(data),
+          secret_hash: VAULT_KEY
+        }]);
+      } catch (e) {
+        console.error('Cloud sync error:', e);
+      }
+    }
+
+    async function loadFromCloud() {
+      try {
+        const { data } = await db.from('vault_items').select('*').eq('secret_hash', VAULT_KEY);
+        if (!data || data.length === 0) return;
+        data.forEach(item => {
+          if (item.category === 'memories') {
+            memories = JSON.parse(item.payload);
+            localStorage.setItem('vault_memories_v2', item.payload);
+            renderCalendar();
+          } else if (item.category === 'countdowns') {
+            countdowns = JSON.parse(item.payload);
+            localStorage.setItem('vault_countdowns_v2', item.payload);
+            renderCountdowns();
+          } else if (item.category === 'track_bhanu') {
+            document.getElementById('songBhanu').value = item.payload;
+            localStorage.setItem('track_bhanu', item.payload);
+          } else if (item.category === 'track_gun') {
+            document.getElementById('songGun').value = item.payload;
+            localStorage.setItem('track_gun', item.payload);
+          }
+        });
+      } catch (e) {
+        console.error('Cloud load error:', e);
+      }
+    }
     // --- 1. Instagram-style Floating Hearts Burst on Open ---
     function burstHearts() {
       const heartTypes = ['💖', '💗', '💕', '✨', '🌸'];
@@ -299,6 +338,7 @@ const VAULT_KEY = 'bhanu_gun_secret';
         document.getElementById('btnDeleteMemory').onclick = () => {
           delete memories[dateKey];
           localStorage.setItem('vault_memories_v2', JSON.stringify(memories));
+          syncToCloud('memories', memories);
           card.style.display = 'none';
           renderCalendar();
         };
@@ -328,6 +368,7 @@ const VAULT_KEY = 'bhanu_gun_secret';
 
       memories[selectedDateKey] = { type, heading, subtitle };
       localStorage.setItem('vault_memories_v2', JSON.stringify(memories));
+      syncToCloud('memories', memories);
       closeDateModal();
       renderCalendar();
     }
@@ -384,6 +425,7 @@ const VAULT_KEY = 'bhanu_gun_secret';
 
       countdowns.push({ id: Date.now(), title, target });
       localStorage.setItem('vault_countdowns_v2', JSON.stringify(countdowns));
+      syncToCloud('countdowns', countdowns);
       closeCountdownModal();
       renderCountdowns();
       updateTimers();
@@ -391,11 +433,15 @@ const VAULT_KEY = 'bhanu_gun_secret';
     function deleteCountdown(id) {
       countdowns = countdowns.filter(c => c.id !== id);
       localStorage.setItem('vault_countdowns_v2', JSON.stringify(countdowns));
+     syncToCloud('countdowns', countdowns); 
       renderCountdowns();
     }
 
     // --- 4. Spotify Tracks ---
-    function saveTrack(who, val) { localStorage.setItem('track_' + who, val); }
+    function saveTrack(who, val) { 
+      localStorage.setItem('track_' + who, val); 
+      syncToCloud('track_' + who, val);
+    }
     document.getElementById('songBhanu').value = localStorage.getItem('track_bhanu') || '';
     document.getElementById('songGun').value = localStorage.getItem('track_gun') || '';
 
@@ -403,6 +449,7 @@ const VAULT_KEY = 'bhanu_gun_secret';
     renderCalendar();
     renderCountdowns();
     updateTimers();
+    loadFromCloud();
   </script>
 </body>
 </html>
