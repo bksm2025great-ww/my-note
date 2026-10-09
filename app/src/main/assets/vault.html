@@ -82,15 +82,49 @@
   .spotify-input { width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--border-color); color: #fff; font-size: 13px; padding: 6px 0; outline: none; }
   .spotify-input::placeholder { color: var(--text-muted); }
 
-  /* Instagram Style Floating Hearts Container */
-  .heart-particle { position: fixed; bottom: -20px; pointer-events: none; z-index: 999; animation: floatUp 2.8s ease-out forwards; }
-  @keyframes floatUp {
-    0% { transform: translateY(0) scale(0.6); opacity: 0; }
-    20% { opacity: 1; }
-    80% { opacity: 0.8; }
-    100% { transform: translateY(-90vh) scale(1.4); opacity: 0; }
+/* Instagram Pop-in Neon Hearts (Wahin Par Pop & Glow) */
+  .heart-particle { 
+    position: fixed; 
+    pointer-events: none; 
+    z-index: 999; 
+    transform: translate(-50%, -50%);
+    animation: instaHeartPop 2.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
+    filter: drop-shadow(0 0 15px #ff2a85) drop-shadow(0 0 30px rgba(255, 42, 133, 0.6));
+  }
+  .heart-particle svg {
+    width: 100%;
+    height: 100%;
+    fill: rgba(255, 42, 133, 0.15);
+    stroke: #ff2a85;
+    stroke-width: 3.5;
+  }
+  @keyframes instaHeartPop {
+    0% { transform: translate(-50%, -50%) scale(0.2); opacity: 0; }
+    20% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+    35% { transform: translate(-50%, -50%) scale(0.95); opacity: 1; }
+    50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.95; }
+    75% { opacity: 0.85; }
+    100% { transform: translate(-50%, -50%) scale(1.1); opacity: 0; }
   }
 
+  /* Calendar Dots & Multi-Event Styles */
+  .event-dots-container {
+    display: flex;
+    justify-content: center;
+    gap: 3px;
+    margin-top: 2px;
+  }
+  .event-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .dot-unforgettable { background: #ff2a85; box-shadow: 0 0 6px #ff2a85; }
+  .dot-celebration   { background: #f59e0b; box-shadow: 0 0 6px #f59e0b; }
+  .dot-sweet         { background: #facc15; box-shadow: 0 0 6px #facc15; }
+  .dot-whispers      { background: #c084fc; box-shadow: 0 0 6px #c084fc; }
+  .dot-smiles        { background: #2dd4bf; box-shadow: 0 0 6px #2dd4bf; }
   /* Modal Form (Add Date Memory & Add Countdown) */
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
   .modal-box { background: #131927; border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 20px; width: 100%; max-width: 320px; }
@@ -118,25 +152,25 @@
     </button>
   </div>
 
-  <!-- Dual Status: Weather & Distance -->
-  <div class="grid-dual">
-    <div class="status-card">
-      <div class="status-header">
-        <span>BHANU</span>
-        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line></svg>
+ <!-- Dual Status: Weather & Distance -->
+<div class="grid-dual">
+      <div class="status-card" onclick="editLocation('bhanu')" style="cursor: pointer;">
+        <div class="status-header">
+          <span>BHANU</span>
+          <span style="font-size: 11px; opacity: 0.7;">✏️</span>
+        </div>
+        <div class="status-value" id="locBhanu" style="font-size: 1rem;">Todaraisingh, Tonk</div>
+        <div class="status-sub">📍 Rajasthan</div>
       </div>
-      <div class="status-value">28°C Clear</div>
-      <div class="status-sub">Location: Rajasthan</div>
-    </div>
-    <div class="status-card">
-      <div class="status-header">
-        <span>GUN</span>
-        <svg class="icon" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path></svg>
+      <div class="status-card" onclick="editLocation('gun')" style="cursor: pointer;">
+        <div class="status-header">
+          <span>GUN</span>
+          <span style="font-size: 11px; opacity: 0.7;">✏️</span>
+        </div>
+        <div class="status-value" id="locGun" style="font-size: 1rem;">Banasthali, Niwai</div>
+        <div class="status-sub" id="distDisplay">Distance: ~65 km</div>
       </div>
-      <div class="status-value">26°C Pleasant</div>
-      <div class="status-sub">Distance: 410 km</div>
     </div>
-  </div>
 
   <!-- Dynamic Real Calendar with Month/Year Navigation -->
   <div class="calendar-section">
@@ -187,10 +221,13 @@
       <h4 id="modalDateLabel">Add Note for Date</h4>
       <input type="text" id="inputHeading" class="modal-input" placeholder="Main Heading (Title)">
       <textarea id="inputSubtitle" class="modal-input" style="height: 70px; resize: none;" placeholder="Subtitle / Sweet details..."></textarea>
-      <select id="selectType" class="modal-select">
-        <option value="special">💗 Super Special (Pink-Red)</option>
-        <option value="effort">🌻 Sweet Effort (Yellow-Peach)</option>
-      </select>
+    <select id="selectType" style="width: 100%; padding: 10px; border-radius: 12px; background: rgba(255,255,255,0.07); color: #fff; border: 1px solid rgba(255,255,255,0.15); margin-bottom: 12px;">
+  <option value="unforgettable" style="background: #181424;">👑 Unforgettable Memories</option>
+  <option value="celebration" style="background: #181424;">🎂 Celebrations & Milestones</option>
+  <option value="sweet" style="background: #181424;">🌻 Sweet Moments</option>
+  <option value="whispers" style="background: #181424;">🌙 Late Night Whispers</option>
+  <option value="smiles" style="background: #181424;">🌊 Stolen Smiles & Little Things</option>
+</select>
       <div class="modal-actions">
         <button class="btn-modal-cancel" onclick="closeDateModal()">Cancel</button>
         <button class="btn-modal-save" onclick="saveDateMemory()">Save</button>
@@ -231,7 +268,7 @@ const VAULT_KEY = 'bhanu_gun_secret';
       }
     }
 
-    async function loadFromCloud() {
+   async function loadFromCloud() {
       try {
         const { data } = await db.from('vault_items').select('*').eq('secret_hash', VAULT_KEY);
         if (!data || data.length === 0) return;
@@ -245,38 +282,57 @@ const VAULT_KEY = 'bhanu_gun_secret';
             localStorage.setItem('vault_countdowns_v2', item.payload);
             renderCountdowns();
           } else if (item.category === 'track_bhanu') {
-            document.getElementById('songBhanu').value = item.payload;
+            const el = document.getElementById('songBhanu');
+            if (el) el.value = item.payload;
             localStorage.setItem('track_bhanu', item.payload);
           } else if (item.category === 'track_gun') {
-            document.getElementById('songGun').value = item.payload;
+            const el = document.getElementById('songGun');
+            if (el) el.value = item.payload;
             localStorage.setItem('track_gun', item.payload);
+          } else if (item.category === 'loc_bhanu') {
+            const el = document.getElementById('locBhanu');
+            if (el) el.innerText = item.payload;
+            localStorage.setItem('loc_bhanu', item.payload);
+          } else if (item.category === 'loc_gun') {
+            const el = document.getElementById('locGun');
+            if (el) el.innerText = item.payload;
+            localStorage.setItem('loc_gun', item.payload);
           }
         });
       } catch (e) {
         console.error('Cloud load error:', e);
       }
     }
-    // --- 1. Instagram-style Floating Hearts Burst on Open ---
+   // --- 1. Instagram Neon Glowing Pop Hearts ---
     function burstHearts() {
-      const heartTypes = ['💖', '💗', '💕', '✨', '🌸'];
-      for (let i = 0; i < 18; i++) {
+      const heartCount = 7;
+      for (let i = 0; i < heartCount; i++) {
         setTimeout(() => {
           const el = document.createElement('div');
           el.className = 'heart-particle';
-          el.innerText = heartTypes[Math.floor(Math.random() * heartTypes.length)];
-          el.style.left = (Math.random() * 85 + 5) + 'vw';
-          el.style.fontSize = (Math.random() * 16 + 18) + 'px';
-          el.style.animationDuration = (Math.random() * 1.5 + 2) + 's';
+          const size = Math.floor(Math.random() * 55 + 75); // 75px se 130px bade glowing hearts
+          el.style.width = size + 'px';
+          el.style.height = size + 'px';
+          el.style.left = (Math.random() * 70 + 15) + 'vw';
+          el.style.top = (Math.random() * 65 + 15) + 'vh';
+          const rot = Math.floor(Math.random() * 30 - 15);
+          el.style.transform = `translate(-50%, -50%) rotate(${rot}deg)`;
+          el.innerHTML = `
+            <svg viewBox="0 0 24 24">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+          `;
           document.body.appendChild(el);
-          setTimeout(() => el.remove(), 3500);
-        }, i * 120);
+          setTimeout(() => el.remove(), 2500);
+        }, i * 200);
       }
     }
     burstHearts();
 
     // --- 2. Dynamic Calendar System ---
-    let viewYear = 2026;
-    let viewMonth = 10; // November (0-based)
+   const now = new Date();
+let viewYear = now.getFullYear();
+let viewMonth = now.getMonth();
     let selectedDateKey = null;
 
     let memories = JSON.parse(localStorage.getItem('vault_memories_v2') || JSON.stringify({
@@ -294,59 +350,138 @@ const VAULT_KEY = 'bhanu_gun_secret';
       document.getElementById('memoryCard').style.display = 'none';
     }
 
-    function renderCalendar() {
-      document.getElementById('calendarMonthTitle').innerText = `${monthNames[viewMonth]} ${viewYear}`;
-      const grid = document.getElementById('calendarDaysGrid');
-      grid.innerHTML = '';
+   
 
-      const firstDay = new Date(viewYear, viewMonth, 1).getDay();
-      const offset = (firstDay === 0 ? 7 : firstDay) - 1; // Mon = 0
-      const totalDays = new Date(viewYear, viewMonth + 1, 0).getDate();
-
-      for (let i = 0; i < offset; i++) {
-        const empty = document.createElement('div');
-        grid.appendChild(empty);
-      }
-
-      for (let d = 1; d <= totalDays; d++) {
-        const cell = document.createElement('div');
-        cell.className = 'date-cell';
-        cell.innerText = d;
-        const dateKey = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-
-        if (memories[dateKey]) {
-          cell.classList.add(memories[dateKey].type === 'special' ? 'circle-special' : 'circle-effort');
-        }
-
-        cell.onclick = () => onDateClicked(dateKey, d, cell);
-        grid.appendChild(cell);
-      }
-    }
-
-    function onDateClicked(dateKey, day, cell) {
+  function onDateClicked(dateKey, day, cell) {
       document.querySelectorAll('.date-cell').forEach(c => c.classList.remove('active'));
       selectedDateKey = dateKey;
 
-      if (memories[dateKey]) {
-        cell.classList.add('active');
+      const dayEvents = memories[dateKey] ? (Array.isArray(memories[dateKey]) ? memories[dateKey] : [memories[dateKey]]) : [];
+
+      if (dayEvents.length > 0) {
+        if (cell) cell.classList.add('active');
         const card = document.getElementById('memoryCard');
         card.style.display = 'block';
-        card.className = 'memory-card ' + (memories[dateKey].type === 'special' ? 'special-card' : 'effort-card');
-        document.getElementById('memoryTitle').innerText = `${day} ${monthNames[viewMonth]}: ${memories[dateKey].heading}`;
-        document.getElementById('memoryDesc').innerText = memories[dateKey].subtitle;
-        
-        document.getElementById('btnDeleteMemory').onclick = () => {
-          delete memories[dateKey];
-          localStorage.setItem('vault_memories_v2', JSON.stringify(memories));
-          syncToCloud('memories', memories);
-          card.style.display = 'none';
-          renderCalendar();
+
+        // 1. Header with Clean "+ Add More" Button
+        let html = `
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px;">
+            <span style="font-weight: 600; font-size: 15px; color: #fff;">${day} ${monthNames[viewMonth]}</span>
+            <button onclick="openDateModal('${dateKey}', ${day})" style="background: rgba(255,42,133,0.15); border: 1px solid rgba(255,42,133,0.4); color: #ff2a85; padding: 4px 10px; border-radius: 8px; font-size: 12px; cursor: pointer;">
+              + Add More
+            </button>
+          </div>
+        `;
+
+        // 2. Minimalist Memory List
+        const typeColors = {
+          unforgettable: '#ff2a85',
+          celebration: '#f59e0b',
+          sweet: '#facc15',
+          whispers: '#c084fc',
+          smiles: '#2dd4bf',
+          special: '#ff2a85',
+          effort: '#facc15'
         };
+
+        dayEvents.forEach((ev, idx) => {
+          const color = typeColors[ev.type] || '#ff2a85';
+          html += `
+            <div style="position: relative; padding: 8px 10px; margin-bottom: 8px; background: rgba(255,255,255,0.04); border-left: 3px solid ${color}; border-radius: 4px;">
+              <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                <div style="font-weight: 600; font-size: 13px; color: #fff;">${ev.heading || 'Memory'}</div>
+                <button onclick="deleteSingleMemory('${dateKey}', ${idx})" style="background: transparent; border: none; color: rgba(255,255,255,0.4); font-size: 13px; cursor: pointer; padding: 0 4px;" title="Delete">✕</button>
+              </div>
+              ${ev.subtitle ? `<div style="font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 4px;">${ev.subtitle}</div>` : ''}
+            </div>
+          `;
+        });
+
+        card.innerHTML = html;
       } else {
         openDateModal(dateKey, day);
       }
     }
 
+    // Ek single memory ko delete karne ka function
+    function deleteSingleMemory(dateKey, index) {
+      if (!memories[dateKey]) return;
+      if (!Array.isArray(memories[dateKey])) memories[dateKey] = [memories[dateKey]];
+
+      memories[dateKey].splice(index, 1);
+
+      if (memories[dateKey].length === 0) {
+        delete memories[dateKey];
+        const card = document.getElementById('memoryCard');
+        if (card) card.style.display = 'none';
+      }
+
+      localStorage.setItem('vault_memories_v2', JSON.stringify(memories));
+      syncToCloud('memories', memories);
+      renderCalendar();
+
+      if (memories[dateKey]) {
+        const day = parseInt(dateKey.split('-')[2]);
+        onDateClicked(dateKey, day, document.querySelector('.date-cell.active'));
+      }
+    }
+
+    // --- Save Date Memory (Multi-event append structure) ---
+    function saveDateMemory() {
+      const heading = document.getElementById('inputHeading').value.trim();
+      const subtitle = document.getElementById('inputSubtitle').value.trim();
+      const type = document.getElementById('selectType').value;
+
+      if (!heading) {
+        alert('Please enter a heading');
+        return;
+      }
+
+      if (!memories[selectedDateKey]) {
+        memories[selectedDateKey] = [];
+      } else if (!Array.isArray(memories[selectedDateKey])) {
+        memories[selectedDateKey] = [memories[selectedDateKey]];
+      }
+
+      // Purani memory delete nahi hogi, nayi list me jud jayegi
+      memories[selectedDateKey].push({
+        type: type,
+        heading: heading,
+        subtitle: subtitle,
+        createdAt: new Date().toISOString()
+      });
+
+      localStorage.setItem('vault_memories_v2', JSON.stringify(memories));
+      syncToCloud('memories', memories);
+
+      closeDateModal();
+      document.getElementById('inputHeading').value = '';
+      document.getElementById('inputSubtitle').value = '';
+
+      renderCalendar();
+      const day = parseInt(selectedDateKey.split('-')[2]);
+      onDateClicked(selectedDateKey, day, document.querySelector('.date-cell.active'));
+    }
+
+    // --- 1-Year Anniversary Checker & Subtle Haptic Buzz ---
+    function checkOneYearCelebration() {
+      const t = new Date();
+      const todayMonthDay = `-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`;
+      
+      Object.keys(memories).forEach(dateStr => {
+        const [evYear] = dateStr.split('-');
+        const yearDiff = t.getFullYear() - parseInt(evYear);
+
+        if (dateStr.endsWith(todayMonthDay) && yearDiff >= 1) {
+          // 1. Ek baar halka sa subtle haptic vibration
+          if (navigator.vibrate) {
+            navigator.vibrate(40);
+          }
+          // 2. Neon hearts celebration popup
+          burstHearts();
+        }
+      });
+    }
     function openDateModal(dateKey, day) {
       selectedDateKey = dateKey;
       document.getElementById('modalDateLabel').innerText = `Add Note • ${day} ${monthNames[viewMonth]} ${viewYear}`;
@@ -447,9 +582,20 @@ const VAULT_KEY = 'bhanu_gun_secret';
 
     // Init
     renderCalendar();
+    checkOneYearCelebration();
     renderCountdowns();
     updateTimers();
     loadFromCloud();
+    // --- Auto-Lock on App Switch / Screen Off ---
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        if (window.parent && window.parent.lockVaultToNotes) {
+          window.parent.lockVaultToNotes();
+        } else {
+          location.reload();
+        }
+      }
+    });
   </script>
 </body>
 </html>
