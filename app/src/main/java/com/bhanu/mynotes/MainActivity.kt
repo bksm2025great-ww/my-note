@@ -1,9 +1,15 @@
 package com.bhanu.mynotes
 
+import android.app.DownloadManager
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
@@ -15,7 +21,9 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.google.android.material.button.MaterialButton
@@ -23,6 +31,11 @@ import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.json.JSONArray
 import org.json.JSONObject
+import java.io.BufferedReader
+import java.io.File
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,9 +50,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var editNoteTitle: EditText
     private lateinit var editNoteContent: EditText
     private lateinit var btnMenuTheme: ImageView
+    private lateinit var updateBadgeDot: View
 
     private var editingNoteId: Long? = null
     private val notesList = mutableListOf<NoteItem>()
+
+    // Update Tracking Variables
+    private var latestApkUrl: String? = null
+    private var latestVersionName: String? = null
+    private var isUpdateAvailable: Boolean = false
 
     data class NoteItem(val id: Long, var title: String, var content: String)
 
@@ -66,6 +85,9 @@ class MainActivity : AppCompatActivity() {
         setupListeners()
         loadNotesFromStorage()
         renderNotes()
+
+        // Background me GitHub Release check karna
+        checkForAppUpdates()
 
         // Back button handling
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -94,10 +116,10 @@ class MainActivity : AppCompatActivity() {
         editNoteTitle = findViewById(R.id.editNoteTitle)
         editNoteContent = findViewById(R.id.editNoteContent)
         btnMenuTheme = findViewById(R.id.btnMenuTheme)
+        updateBadgeDot = findViewById(R.id.updateBadgeDot)
     }
 
     private fun setupAutofillFix() {
-        // Keyboard par 'Passwords' suggestion aana band karega
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             searchBar.importantForAutofill = View.IMPORTANT_FOR_AUTOFILL_NO
         }
@@ -152,8 +174,145 @@ class MainActivity : AppCompatActivity() {
             saveCurrentNote()
         }
 
+        // Settings / Update Icon click
         btnMenuTheme.setOnClickListener {
-            Toast.makeText(this, "Themes & Settings coming soon", Toast.LENGTH_SHORT).show()
+            showSettingsUpdateDialog()
+        }
+    }
+
+    // --- GitHub Release Check Logic ---
+    private fun checkForAppUpdates() {
+        Thread {
+            try {
+                val url = URL("https://api.github.com/repos/bksm2025great-ww/my-note/releases/latest")
+                val conn = url.openConnection() as HttpURLConnection
+                conn.requestMethod = "GET"
+                conn.setRequestProperty("Accept", "application/vnd.github.v3+json")
+                conn.connectTimeout = 6000
+                conn.readTimeout = 6000
+
+                if (conn.responseCode == 200) {
+                    val reader = BufferedReader(InputStreamReader(conn.inputStream))
+                    val response = StringBuilder()
+                    var line: String?
+                    while (reader.readLine().also { line = it } != null) {
+                        response.append(line)
+                    }
+                    reader.close()
+
+                    val json = JSONObject(response.toString())
+                    val tagName = json.optString("tag_name", "")
+                    val assets = json.optJSONArray("assets")
+
+                    var downloadUrl: String? = null
+                    if (assets != null) {
+                        for (i in 0 until assets.length()) {
+                            val asset = assets.getJSONObject(i)
+                            val name = asset.optString("name", "")
+                            if (name.endsWith(".apk")) {
+                                downloadUrl = asset.optString("browser_download_url", null)
+                                break
+                            }
+                        }
+                    }
+
+                    val currentVersion = packageManager.getPackageInfo(packageName, 0).versionName
+
+                    // Version comparison
+                    if (downloadUrl != null && tagName.isNotEmpty() && tagName != currentVersion && !tagName.contains(currentVersion ?: "")) {
+                        latestApkUrl = downloadUrl
+                        latestVersionName = tagName
+                        isUpdateAvailable = true
+
+                        runOnUiThread {
+                            updateBadgeDot.visibility = View.VISIBLE
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }.start()
+    }
+
+    // --- Settings & Update Popup Card ---
+    private fun showSettingsUpdateDialog() {
+        val currentVersion = try {
+            packageManager.getPackageInfo(packageName, 0).versionName ?: "1.0"
+        } catch (e: Exception) {
+            "1.0"
+        }
+
+        val dialogBuilder = AlertDialog.Builder(this)
+        dialogBuilder.setTitle("Settings & Updates")
+
+        if (isUpdateAvailable && latestApkUrl != null) {
+            dialogBuilder.setMessage("A new update ($latestVersionName) is ready!\n\nCurrent version: $currentVersion\nTap below to download and install automatically.")
+            dialogBuilder.setPositiveButton("Update Now") { _, _ ->
+                downloadAndInstallApk(latestApkUrl!!)
+            }
+            dialogBuilder.setNegativeButton("Later", null)
+        } else {
+            dialogBuilder.setMessage("Your app is up to date!\n\nCurrent version: $currentVersion")
+            dialogBuilder.setPositiveButton("Check Again") { _, _ ->
+                Toast.makeText(this, "Checking for updates...", Toast.LENGTH_SHORT).show()
+                checkForAppUpdates()
+            }
+            dialogBuilder.setNegativeButton("Close", null)
+        }
+
+        dialogBuilder.show()
+    }
+
+    // --- Direct In-App Download and Install ---
+    private fun downloadAndInstallApk(apkUrl: String) {
+        Toast.makeText(this, "Downloading update in background...", Toast.LENGTH_LONG).show()
+
+        try {
+            val fileName = "my_notes_update.apk"
+            val destination = File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), fileName)
+            if (destination.exists()) destination.delete()
+
+            val request = DownloadManager.Request(Uri.parse(apkUrl)).apply {
+                setTitle("Downloading My Notes Update")
+                setDescription("Please wait while the update downloads...")
+                setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                setDestinationUri(Uri.fromFile(destination))
+            }
+
+            val manager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+            val downloadId = manager.enqueue(request)
+
+            val onComplete = object : BroadcastReceiver() {
+                override fun onReceive(context: Context?, intent: Intent?) {
+                    val id = intent?.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1L)
+                    if (id == downloadId) {
+                        try {
+                            unregisterReceiver(this)
+                        } catch (e: Exception) {}
+
+                        // Launch Native Android Package Installer
+                        val installIntent = Intent(Intent.ACTION_VIEW).apply {
+                            val apkUri = FileProvider.getUriForFile(
+                                this@MainActivity,
+                                "$packageName.provider",
+                                destination
+                            )
+                            setDataAndType(apkUri, "application/vnd.android.package-archive")
+                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        }
+                        startActivity(installIntent)
+                    }
+                }
+            }
+
+            registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE), Context.RECEIVER_NOT_EXPORTED)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            // Fallback: agar permission issue ho to seedha link open karega
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(apkUrl))
+            startActivity(browserIntent)
         }
     }
 
@@ -387,7 +546,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        // App background me jate hi secret space band hokar Notes par aa jayega
         if (::secretVaultWebView.isInitialized && secretVaultWebView.visibility == View.VISIBLE) {
             lockVaultToNotes()
         }
