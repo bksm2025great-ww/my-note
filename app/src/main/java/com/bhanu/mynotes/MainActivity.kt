@@ -8,6 +8,7 @@ import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
 import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
@@ -52,6 +53,12 @@ class MainActivity : AppCompatActivity() {
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
 
         setContentView(R.layout.activity_main)
+
+        // Privacy Shield: Recent Apps me screen black dikhane ke liye
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_SECURE,
+            WindowManager.LayoutParams.FLAG_SECURE
+        )
 
         initViews()
         setupAutofillFix()
@@ -302,6 +309,7 @@ class MainActivity : AppCompatActivity() {
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 ).apply {
+                    bottomMargin = dpToPx(0)
                     topMargin = dpToPx(8)
                 }
                 layoutParams = contentParams
@@ -375,5 +383,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun dpToPx(dp: Int): Int {
         return (dp * resources.displayMetrics.density).toInt()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // App background me jate hi secret space band hokar Notes par aa jayega
+        if (::secretVaultWebView.isInitialized && secretVaultWebView.visibility == View.VISIBLE) {
+            lockVaultToNotes()
+        }
     }
 }
