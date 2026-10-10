@@ -200,18 +200,40 @@
     <div id="countdownsContainer"></div>
   </div>
 
-  <!-- Mutual Spotify Suggestions with Custom Colors -->
-  <div class="section-wrap">
+<!-- Mutual Spotify Suggestions with Mini Players -->
+  <div class="section-wrap" id="spotifySection">
     <div class="section-head">
       <span>Suggested Tracks</span>
     </div>
-    <div class="spotify-item-bhanu">
-      <div class="bhanu-tag">BHANU'S PICK</div>
-      <input type="text" class="spotify-input" id="songBhanu" placeholder="Paste Spotify track link..." onchange="saveTrack('bhanu', this.value)">
+    
+    <!-- Bhanu's Section -->
+    <div class="spotify-card bhanu-card">
+      <div class="spotify-card-header">
+        <span class="bhanu-tag">BHANU'S PICKS</span>
+        <button type="button" class="spotify-add-btn" id="addBtnBhanu" onclick="promptAddTrack('bhanu')">
+          <!-- WhatsApp Style Clean Pencil Icon -->
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+          </svg>
+          <span>Add Song</span>
+        </button>
+      </div>
+      <div id="tracksBhanu" class="tracks-list"></div>
     </div>
-    <div class="spotify-item-gun">
-      <div class="gun-tag">GUN'S PICK</div>
-      <input type="text" class="spotify-input" id="songGun" placeholder="Paste Spotify track link..." onchange="saveTrack('gun', this.value)">
+
+    <!-- Gun's Section -->
+    <div class="spotify-card gun-card">
+      <div class="spotify-card-header">
+        <span class="gun-tag">GUN'S PICKS</span>
+        <button type="button" class="spotify-add-btn" id="addBtnGun" onclick="promptAddTrack('gun')">
+          <!-- WhatsApp Style Clean Pencil Icon -->
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+          </svg>
+          <span>Add Song</span>
+        </button>
+      </div>
+      <div id="tracksGun" class="tracks-list"></div>
     </div>
   </div>
 
