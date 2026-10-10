@@ -495,10 +495,33 @@ const VAULT_KEY = 'bhanu_gun_secret';
       }
     }
 
-   async function loadFromCloud() {
+ // --- Tracks Memory & State ---
+    let tracksBhanu = JSON.parse(localStorage.getItem('vault_tracks_bhanu') || '[]');
+    let tracksGun = JSON.parse(localStorage.getItem('vault_tracks_gun') || '[]');
+    let removeModeBhanu = false;
+    let removeModeGun = false;
+
+    // --- Cloud Sync Helpers ---
+    async function syncToCloud(category, data) {
+      try {
+        await db.from('vault_items').delete().eq('category', category).eq('secret_hash', VAULT_KEY);
+        await db.from('vault_items').insert([{
+          category: category,
+          payload: typeof data === 'string' ? data : JSON.stringify(data),
+          secret_hash: VAULT_KEY
+        }]);
+      } catch (e) {
+        console.error('Cloud sync error:', e);
+      }
+    }
+
+    async function loadFromCloud() {
       try {
         const { data } = await db.from('vault_items').select('*').eq('secret_hash', VAULT_KEY);
-        if (!data || data.length === 0) return;
+        if (!data || data.length === 0) {
+          renderAllTracks();
+          return;
+        }
         data.forEach(item => {
           if (item.category === 'memories') {
             memories = JSON.parse(item.payload);
@@ -508,14 +531,14 @@ const VAULT_KEY = 'bhanu_gun_secret';
             countdowns = JSON.parse(item.payload);
             localStorage.setItem('vault_countdowns_v2', item.payload);
             renderCountdowns();
-          } else if (item.category === 'track_bhanu') {
-            const el = document.getElementById('songBhanu');
-            if (el) el.value = item.payload;
-            localStorage.setItem('track_bhanu', item.payload);
-          } else if (item.category === 'track_gun') {
-            const el = document.getElementById('songGun');
-            if (el) el.value = item.payload;
-            localStorage.setItem('track_gun', item.payload);
+          } else if (item.category === 'tracks_bhanu_v3') {
+            tracksBhanu = JSON.parse(item.payload);
+            localStorage.setItem('vault_tracks_bhanu', item.payload);
+            renderTracks('bhanu');
+          } else if (item.category === 'tracks_gun_v3') {
+            tracksGun = JSON.parse(item.payload);
+            localStorage.setItem('vault_tracks_gun', item.payload);
+            renderTracks('gun');
           } else if (item.category === 'loc_bhanu') {
             const el = document.getElementById('locBhanu');
             if (el) el.innerText = item.payload;
@@ -526,9 +549,112 @@ const VAULT_KEY = 'bhanu_gun_secret';
             localStorage.setItem('loc_gun', item.payload);
           }
         });
+        renderAllTracks();
       } catch (e) {
         console.error('Cloud load error:', e);
       }
+    }
+
+    // --- Spotify Compact Player Engine ---
+    function renderAllTracks() {
+      renderTracks('bhanu');
+      renderTracks('gun');
+    }
+
+    function renderTracks(user) {
+      const container = document.getElementById(user === 'bhanu' ? 'tracksBhanu' : 'tracksGun');
+      if (!container) return;
+      const list = user === 'bhanu' ? tracksBhanu : tracksGun;
+
+      if (!list || list.length === 0) {
+        container.innerHTML = '<div class="no-tracks-txt">No tracks suggested yet. Tap + Add to share music.</div>';
+        return;
+      }
+
+      container.innerHTML = list.map((track, idx) => `
+        <div class="spotify-player-card">
+          <div class="player-left" onclick="openSpotifyApp('${track.url}')">
+            <img class="album-cover" src="${track.cover || 'https://open.spotifycdn.com/cdn/images/favicon32.8e66b099.png'}" alt="Art">
+            <div class="track-details">
+              <span class="track-title">${track.title || 'Spotify Track'}</span>
+              <span class="track-artist">${track.artist || 'Tap to play on Spotify'}</span>
+            </div>
+          </div>
+          <div class="player-right">
+            <button type="button" class="spotify-play-btn" onclick="openSpotifyApp('${track.url}')" title="Play">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+            </button>
+            <button type="button" class="track-del-btn" onclick="deleteTrack('${user}', ${idx})" title="Remove">✕</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openSpotifyApp(url) {
+      if (!url) return;
+      // Direct intent / Spotify link trigger
+      window.location.href = url;
+    }
+
+    async function promptAddTrack(user) {
+      const list = user === 'bhanu' ? tracksBhanu : tracksGun;
+      if (list.length >= 3) {
+        alert('Maximum 3 tracks allowed per person. Please remove an existing song first!');
+        return;
+      }
+
+      const inputUrl = prompt('Paste Spotify Track Link (open.spotify.com/track/...):');
+      if (!inputUrl || !inputUrl.trim()) return;
+
+      const cleanUrl = inputUrl.trim();
+      const newTrack = {
+        url: cleanUrl,
+        title: 'Spotify Track',
+        artist: 'Playing on Spotify',
+        cover: 'https://open.spotifycdn.com/cdn/images/favicon32.8e66b099.png'
+      };
+
+      // Auto-fetch song title & album art from Spotify
+      try {
+        const res = await fetch('https://open.spotify.com/oembed?url=' + encodeURIComponent(cleanUrl));
+        if (res.ok) {
+          const meta = await res.json();
+          if (meta.title) newTrack.title = meta.title;
+          if (meta.thumbnail_url) newTrack.cover = meta.thumbnail_url;
+        }
+      } catch (err) {
+        console.log('Using default cover art fallback');
+      }
+
+      list.push(newTrack);
+      saveTracks(user);
+    }
+
+    function toggleRemoveMode(user) {
+      const container = document.getElementById(user === 'bhanu' ? 'tracksBhanu' : 'tracksGun');
+      const btn = document.getElementById(user === 'bhanu' ? 'removeBtnBhanu' : 'removeBtnGun');
+      if (!container || !btn) return;
+
+      const isRemoving = container.classList.toggle('is-removing');
+      btn.classList.toggle('active-remove', isRemoving);
+    }
+
+    function deleteTrack(user, index) {
+      const list = user === 'bhanu' ? tracksBhanu : tracksGun;
+      list.splice(index, 1);
+      saveTracks(user);
+    }
+
+    function saveTracks(user) {
+      const list = user === 'bhanu' ? tracksBhanu : tracksGun;
+      const category = user === 'bhanu' ? 'tracks_bhanu_v3' : 'tracks_gun_v3';
+      const storageKey = user === 'bhanu' ? 'vault_tracks_bhanu' : 'vault_tracks_gun';
+
+      localStorage.setItem(storageKey, JSON.stringify(list));
+      syncToCloud(category, list);
+      renderTracks(user);
     }
    // --- 1. Instagram Neon Glowing Pop Hearts ---
     function burstHearts() {
