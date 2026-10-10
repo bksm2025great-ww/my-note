@@ -20,7 +20,7 @@
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
- body { background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, var(--bg-dark) 75%); color: var(--text-main); min-height: 100vh; padding: 54px 16px 80px 16px; overflow-x: hidden; position: relative; }
+  body { background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, var(--bg-dark) 75%); color: var(--text-main); min-height: 100vh; padding: 54px 16px 80px 16px; overflow-x: hidden; position: relative; }
 
   /* SVG Icons */
   .icon { width: 18px; height: 18px; vertical-align: middle; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
@@ -74,15 +74,7 @@
   .timer-digits { font-size: 18px; font-weight: 800; letter-spacing: 0.5px; color: #fff; }
   .timer-digits span { font-size: 11px; font-weight: 400; color: var(--text-muted); margin-right: 5px; }
 
-  /* Spotify Tracks: Custom Yellow & Pink-Lavender Themes */
-  .spotify-item-bhanu { background: linear-gradient(135deg, rgba(254, 240, 138, 0.08), rgba(202, 138, 4, 0.03)); border: 1px solid rgba(254, 240, 138, 0.25); border-radius: 14px; padding: 14px; margin-bottom: 12px; }
-  .spotify-item-gun { background: linear-gradient(135deg, rgba(244, 114, 182, 0.08), rgba(192, 132, 252, 0.05)); border: 1px solid rgba(244, 114, 182, 0.25); border-radius: 14px; padding: 14px; }
-  .bhanu-tag { font-size: 11px; color: var(--bhanu-yellow); font-weight: 700; letter-spacing: 0.5px; margin-bottom: 6px; }
-  .gun-tag { font-size: 11px; background: linear-gradient(90deg, var(--gun-pink), var(--gun-lavender)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 6px; }
-  .spotify-input { width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--border-color); color: #fff; font-size: 13px; padding: 6px 0; outline: none; }
-  .spotify-input::placeholder { color: var(--text-muted); }
-
-/* Instagram Pop-in Neon Hearts (Wahin Par Pop & Glow) */
+  /* Instagram Pop-in Neon Hearts */
   .heart-particle { 
     position: fixed; 
     pointer-events: none; 
@@ -125,6 +117,7 @@
   .dot-sweet         { background: #facc15; box-shadow: 0 0 6px #facc15; }
   .dot-whispers      { background: #c084fc; box-shadow: 0 0 6px #c084fc; }
   .dot-smiles        { background: #2dd4bf; box-shadow: 0 0 6px #2dd4bf; }
+
   /* Modal Form (Add Date Memory & Add Countdown) */
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
   .modal-box { background: #131927; border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 20px; width: 100%; max-width: 320px; }
@@ -136,194 +129,193 @@
   .btn-modal-save { background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none; color: #fff; padding: 8px 16px; border-radius: 10px; font-size: 12px; font-weight: 600; cursor: pointer; }
 
   @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
-/* --- Spotify Suggested Tracks & Mini Players Styling --- */
-.spotify-card {
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 16px;
-  padding: 14px;
-  margin-bottom: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
 
-.spotify-card.bhanu-card {
-  border-color: rgba(251, 191, 36, 0.3);
-}
+  /* --- Spotify Suggested Tracks & Mini Players Styling --- */
+  .spotify-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
 
-.spotify-card.gun-card {
-  border-color: rgba(244, 114, 182, 0.3);
-}
+  .spotify-card.bhanu-card {
+    border-color: rgba(251, 191, 36, 0.3);
+  }
 
-.spotify-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
+  .spotify-card.gun-card {
+    border-color: rgba(244, 114, 182, 0.3);
+  }
 
-.bhanu-tag {
-  color: #FBBF24;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
+  .spotify-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
 
-.gun-tag {
-  color: #F472B6;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
+  .bhanu-tag {
+    color: #FBBF24;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
 
-.spotify-header-actions {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
+  .gun-tag {
+    color: #F472B6;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
 
-.spotify-action-btn {
-  background: rgba(255, 255, 255, 0.06);
-  color: #CBD5E1;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 20px;
-  padding: 4px 10px;
-  font-size: 11px;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  cursor: pointer;
-  outline: none;
-  transition: all 0.2s ease;
-}
+  .spotify-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
 
-.spotify-action-btn:active {
-  background: rgba(255, 255, 255, 0.15);
-  transform: scale(0.96);
-}
+  .spotify-action-btn {
+    background: rgba(255, 255, 255, 0.06);
+    color: #CBD5E1;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 11px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s ease;
+  }
 
-.spotify-action-btn.active-remove {
-  background: rgba(239, 68, 68, 0.2);
-  border-color: #EF4444;
-  color: #FCA5A5;
-}
+  .spotify-action-btn:active {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(0.96);
+  }
 
-.tracks-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
+  .spotify-action-btn.active-remove {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: #EF4444;
+    color: #FCA5A5;
+  }
 
-/* Compact Embed Player Card (Option 1) */
-.spotify-player-card {
-  background: #181818;
-  border-radius: 12px;
-  padding: 8px 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  position: relative;
-  overflow: hidden;
-}
+  .tracks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
 
-.player-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex: 1;
-  min-width: 0;
-  cursor: pointer;
-}
+  /* Compact Embed Player Card */
+  .spotify-player-card {
+    background: #181818;
+    border-radius: 12px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    overflow: hidden;
+  }
 
-.album-cover {
-  width: 44px;
-  height: 44px;
-  border-radius: 8px;
-  object-fit: cover;
-  background: #282828;
-  flex-shrink: 0;
-}
+  .player-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+    cursor: pointer;
+  }
 
-.track-details {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
+  .album-cover {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    object-fit: cover;
+    background: #282828;
+    flex-shrink: 0;
+  }
 
-.track-title {
-  color: #FFFFFF;
-  font-size: 13px;
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+  .track-details {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
 
-.track-artist {
-  color: #A7A7A7;
-  font-size: 11px;
-  margin-top: 2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+  .track-title {
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
-.player-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-left: 10px;
-}
+  .track-artist {
+    color: #A7A7A7;
+    font-size: 11px;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
-/* Spotify Play Button */
-.spotify-play-btn {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: #1DB954;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #000000;
-  cursor: pointer;
-  border: none;
-  outline: none;
-  flex-shrink: 0;
-}
+  .player-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 10px;
+  }
 
-.spotify-play-btn:active {
-  transform: scale(0.92);
-}
+  .spotify-play-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #1DB954;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000000;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    flex-shrink: 0;
+  }
 
-/* Delete cross button in Remove Mode */
-.track-del-btn {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: rgba(239, 68, 68, 0.8);
-  color: #FFFFFF;
-  border: none;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  flex-shrink: 0;
-}
+  .spotify-play-btn:active {
+    transform: scale(0.92);
+  }
 
-.tracks-list.is-removing .track-del-btn {
-  display: flex;
-}
+  .track-del-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(239, 68, 68, 0.8);
+    color: #FFFFFF;
+    border: none;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
 
-.tracks-list.is-removing .spotify-play-btn {
-  display: none;
-}
+  .tracks-list.is-removing .track-del-btn {
+    display: flex;
+  }
 
-.no-tracks-txt {
-  font-size: 12px;
-  color: #64748B;
-  text-align: center;
-  padding: 10px 0;
-  font-style: italic;
-}
+  .tracks-list.is-removing .spotify-play-btn {
+    display: none;
+  }
+
+  .no-tracks-txt {
+    font-size: 12px;
+    color: #64748B;
+    text-align: center;
+    padding: 10px 0;
+    font-style: italic;
+  }
 </style>
 </head>
 <body>
@@ -340,25 +332,25 @@
     </button>
   </div>
 
- <!-- Dual Status: Weather & Distance -->
-<div class="grid-dual">
-      <div class="status-card" onclick="editLocation('bhanu')" style="cursor: pointer;">
-        <div class="status-header">
-          <span>BHANU</span>
-          <span style="font-size: 11px; opacity: 0.7;">✏️</span>
-        </div>
-        <div class="status-value" id="locBhanu" style="font-size: 1rem;">Todaraisingh, Tonk</div>
-        <div class="status-sub">📍 Rajasthan</div>
+  <!-- Dual Status: Weather & Distance -->
+  <div class="grid-dual">
+    <div class="status-card" onclick="editLocation('bhanu')" style="cursor: pointer;">
+      <div class="status-header">
+        <span>BHANU</span>
+        <span style="font-size: 11px; opacity: 0.7;">✏️</span>
       </div>
-      <div class="status-card" onclick="editLocation('gun')" style="cursor: pointer;">
-        <div class="status-header">
-          <span>GUN</span>
-          <span style="font-size: 11px; opacity: 0.7;">✏️</span>
-        </div>
-        <div class="status-value" id="locGun" style="font-size: 1rem;">Banasthali, Niwai</div>
-        <div class="status-sub" id="distDisplay">Distance: ~65 km</div>
-      </div>
+      <div class="status-value" id="locBhanu" style="font-size: 1rem;">Todaraisingh, Tonk</div>
+      <div class="status-sub">📍 Rajasthan</div>
     </div>
+    <div class="status-card" onclick="editLocation('gun')" style="cursor: pointer;">
+      <div class="status-header">
+        <span>GUN</span>
+        <span style="font-size: 11px; opacity: 0.7;">✏️</span>
+      </div>
+      <div class="status-value" id="locGun" style="font-size: 1rem;">Banasthali, Niwai</div>
+      <div class="status-sub" id="distDisplay">Distance: ~65 km</div>
+    </div>
+  </div>
 
   <!-- Dynamic Real Calendar with Month/Year Navigation -->
   <div class="calendar-section">
@@ -388,7 +380,7 @@
     <div id="countdownsContainer"></div>
   </div>
 
-<!-- Mutual Spotify Suggestions with Mini Players -->
+  <!-- Mutual Spotify Suggestions with Mini Players -->
   <div class="section-wrap" id="spotifySection">
     <div class="section-head">
       <span>Suggested Tracks</span>
@@ -442,30 +434,32 @@
       <div id="tracksGun" class="tracks-list"></div>
     </div>
   </div>
+
   <!-- Spotify In-App Add Track Modal -->
-<div id="spotifyModal" class="modal-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center;">
-  <div class="modal-box" style="background: #181818; border: 1px solid rgba(255,255,255,0.15); border-radius: 16px; padding: 18px; width: 85%; max-width: 320px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
-    <h4 id="spotifyModalTitle" style="color: #fff; margin: 0 0 12px 0; font-size: 15px; font-weight: 600;">Add Track for Bhanu</h4>
-    <input type="text" id="spotifyLinkInput" placeholder="Paste Spotify link here..." style="width: 100%; box-sizing: border-box; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 10px; color: #fff; font-size: 13px; outline: none; margin-bottom: 14px;">
-    <div style="display: flex; gap: 8px; justify-content: flex-end;">
-      <button type="button" onclick="closeSpotifyModal()" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #ccc; border-radius: 8px; padding: 6px 14px; font-size: 12px; cursor: pointer;">Cancel</button>
-      <button type="button" onclick="confirmAddSpotifyTrack()" style="background: #1DB954; border: none; color: #000; font-weight: 600; border-radius: 8px; padding: 6px 16px; font-size: 12px; cursor: pointer;">Save</button>
+  <div id="spotifyModal" class="modal-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center;">
+    <div class="modal-box" style="background: #181818; border: 1px solid rgba(255,255,255,0.15); border-radius: 16px; padding: 18px; width: 85%; max-width: 320px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+      <h4 id="spotifyModalTitle" style="color: #fff; margin: 0 0 12px 0; font-size: 15px; font-weight: 600;">Add Track for Bhanu</h4>
+      <input type="text" id="spotifyLinkInput" placeholder="Paste Spotify link here..." style="width: 100%; box-sizing: border-box; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 10px; color: #fff; font-size: 13px; outline: none; margin-bottom: 14px;">
+      <div style="display: flex; gap: 8px; justify-content: flex-end;">
+        <button type="button" onclick="closeSpotifyModal()" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #ccc; border-radius: 8px; padding: 6px 14px; font-size: 12px; cursor: pointer;">Cancel</button>
+        <button type="button" onclick="confirmAddSpotifyTrack()" style="background: #1DB954; border: none; color: #000; font-weight: 600; border-radius: 8px; padding: 6px 16px; font-size: 12px; cursor: pointer;">Save</button>
+      </div>
     </div>
   </div>
-</div>
+
   <!-- Modal for Adding/Editing Date Memory -->
   <div id="dateModal" class="modal-overlay">
     <div class="modal-box">
       <h4 id="modalDateLabel">Add Note for Date</h4>
       <input type="text" id="inputHeading" class="modal-input" placeholder="Main Heading (Title)">
       <textarea id="inputSubtitle" class="modal-input" style="height: 70px; resize: none;" placeholder="Subtitle / Sweet details..."></textarea>
-    <select id="selectType" style="width: 100%; padding: 10px; border-radius: 12px; background: rgba(255,255,255,0.07); color: #fff; border: 1px solid rgba(255,255,255,0.15); margin-bottom: 12px;">
-  <option value="unforgettable" style="background: #181424;">👑 Unforgettable Memories</option>
-  <option value="celebration" style="background: #181424;">🎂 Celebrations & Milestones</option>
-  <option value="sweet" style="background: #181424;">🌻 Sweet Moments</option>
-  <option value="whispers" style="background: #181424;">🌙 Late Night Whispers</option>
-  <option value="smiles" style="background: #181424;">🌊 Stolen Smiles & Little Things</option>
-</select>
+      <select id="selectType" style="width: 100%; padding: 10px; border-radius: 12px; background: rgba(255,255,255,0.07); color: #fff; border: 1px solid rgba(255,255,255,0.15); margin-bottom: 12px;">
+        <option value="unforgettable" style="background: #181424;">👑 Unforgettable Memories</option>
+        <option value="celebration" style="background: #181424;">🎂 Celebrations & Milestones</option>
+        <option value="sweet" style="background: #181424;">🌻 Sweet Moments</option>
+        <option value="whispers" style="background: #181424;">🌙 Late Night Whispers</option>
+        <option value="smiles" style="background: #181424;">🌊 Stolen Smiles & Little Things</option>
+      </select>
       <div class="modal-actions">
         <button class="btn-modal-cancel" onclick="closeDateModal()">Cancel</button>
         <button class="btn-modal-save" onclick="saveDateMemory()">Save</button>
@@ -487,13 +481,23 @@
   </div>
 
   <script>
-   // --- Supabase Connection ---
-const SUPABASE_URL = 'https://cwrjrpfvyqjujnxohhpg.supabase.co';
+    // --- Supabase Connection ---
+   const SUPABASE_URL = 'https://cwrjrpfvyqjujnxohhpg.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3cmpycGZ2eXFqdWpueG9oaHBnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE0NzQzMjcsImV4cCI6MjEwNzA1MDMyN30.U25FoTSwY53kie1pQehE0WFf58Z8f-QpjMMoS-aHKN8 '; 
-const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-const VAULT_KEY = 'bhanu_gun_secret';
+    const VAULT_KEY = 'bhanu_gun_secret';
+
+    let db = null;
+    try {
+      if (typeof supabase !== 'undefined' && SUPABASE_URL !== 'YOUR_SUPABASE_URL_HERE' && SUPABASE_KEY !== 'YOUR_SUPABASE_KEY_HERE') {
+        db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      }
+    } catch (err) {
+      console.error('Supabase init error:', err);
+    }
+
     // --- Cloud Sync Helpers ---
     async function syncToCloud(category, data) {
+      if (!db) return;
       try {
         await db.from('vault_items').delete().eq('category', category).eq('secret_hash', VAULT_KEY);
         await db.from('vault_items').insert([{
@@ -506,67 +510,70 @@ const VAULT_KEY = 'bhanu_gun_secret';
       }
     }
 
- // --- Tracks Memory & State ---
+    // --- State & Memory Initializers (No hardcoded old 3 Nov dates) ---
     let tracksBhanu = JSON.parse(localStorage.getItem('vault_tracks_bhanu') || '[]');
     let tracksGun = JSON.parse(localStorage.getItem('vault_tracks_gun') || '[]');
-    let removeModeBhanu = false;
-    let removeModeGun = false;
-
-    // --- Cloud Sync Helpers ---
-    async function syncToCloud(category, data) {
-      try {
-        await db.from('vault_items').delete().eq('category', category).eq('secret_hash', VAULT_KEY);
-        await db.from('vault_items').insert([{
-          category: category,
-          payload: typeof data === 'string' ? data : JSON.stringify(data),
-          secret_hash: VAULT_KEY
-        }]);
-      } catch (e) {
-        console.error('Cloud sync error:', e);
-      }
-    }
+    let countdowns = JSON.parse(localStorage.getItem('vault_countdowns_v2') || '[]');
+    let memories = JSON.parse(localStorage.getItem('vault_memories_v2') || '{}');
+    let currentSpotifyUser = 'bhanu';
 
     async function loadFromCloud() {
+      if (!db) {
+        renderCalendar();
+        renderCountdowns();
+        renderAllTracks();
+        return;
+      }
       try {
         const { data } = await db.from('vault_items').select('*').eq('secret_hash', VAULT_KEY);
-        if (!data || data.length === 0) {
-          renderAllTracks();
-          return;
+        if (data && data.length > 0) {
+          data.forEach(item => {
+            if (item.category === 'memories') {
+              memories = JSON.parse(item.payload);
+              localStorage.setItem('vault_memories_v2', item.payload);
+            } else if (item.category === 'countdowns') {
+              countdowns = JSON.parse(item.payload);
+              localStorage.setItem('vault_countdowns_v2', item.payload);
+            } else if (item.category === 'tracks_bhanu_v3') {
+              tracksBhanu = JSON.parse(item.payload);
+              localStorage.setItem('vault_tracks_bhanu', item.payload);
+            } else if (item.category === 'tracks_gun_v3') {
+              tracksGun = JSON.parse(item.payload);
+              localStorage.setItem('vault_tracks_gun', item.payload);
+            } else if (item.category === 'loc_bhanu') {
+              const el = document.getElementById('locBhanu');
+              if (el) el.innerText = item.payload;
+              localStorage.setItem('loc_bhanu', item.payload);
+            } else if (item.category === 'loc_gun') {
+              const el = document.getElementById('locGun');
+              if (el) el.innerText = item.payload;
+              localStorage.setItem('loc_gun', item.payload);
+            }
+          });
         }
-        data.forEach(item => {
-          if (item.category === 'memories') {
-            memories = JSON.parse(item.payload);
-            localStorage.setItem('vault_memories_v2', item.payload);
-            renderCalendar();
-          } else if (item.category === 'countdowns') {
-            countdowns = JSON.parse(item.payload);
-            localStorage.setItem('vault_countdowns_v2', item.payload);
-            renderCountdowns();
-          } else if (item.category === 'tracks_bhanu_v3') {
-            tracksBhanu = JSON.parse(item.payload);
-            localStorage.setItem('vault_tracks_bhanu', item.payload);
-            renderTracks('bhanu');
-          } else if (item.category === 'tracks_gun_v3') {
-            tracksGun = JSON.parse(item.payload);
-            localStorage.setItem('vault_tracks_gun', item.payload);
-            renderTracks('gun');
-          } else if (item.category === 'loc_bhanu') {
-            const el = document.getElementById('locBhanu');
-            if (el) el.innerText = item.payload;
-            localStorage.setItem('loc_bhanu', item.payload);
-          } else if (item.category === 'loc_gun') {
-            const el = document.getElementById('locGun');
-            if (el) el.innerText = item.payload;
-            localStorage.setItem('loc_gun', item.payload);
-          }
-        });
-        renderAllTracks();
       } catch (e) {
         console.error('Cloud load error:', e);
+      } finally {
+        renderCalendar();
+        renderCountdowns();
+        renderAllTracks();
       }
     }
 
-    // --- Spotify Compact Player Engine ---
+    // --- Location Editor ---
+    function editLocation(who) {
+      const el = document.getElementById(who === 'bhanu' ? 'locBhanu' : 'locGun');
+      const current = el ? el.innerText : '';
+      const input = prompt(`Update location for ${who.toUpperCase()}:`, current);
+      if (input && input.trim()) {
+        const val = input.trim();
+        if (el) el.innerText = val;
+        localStorage.setItem('loc_' + who, val);
+        syncToCloud('loc_' + who, val);
+      }
+    }
+
+    // --- Spotify In-App Modal & Track Engine ---
     function renderAllTracks() {
       renderTracks('bhanu');
       renderTracks('gun');
@@ -605,31 +612,55 @@ const VAULT_KEY = 'bhanu_gun_secret';
 
     function openSpotifyApp(url) {
       if (!url) return;
-      // Direct intent / Spotify link trigger
       window.location.href = url;
     }
 
-    async function promptAddTrack(user) {
+    function promptAddTrack(user) {
       const list = user === 'bhanu' ? tracksBhanu : tracksGun;
-      if (list.length >= 3) {
+      if (list && list.length >= 3) {
         alert('Maximum 3 tracks allowed per person. Please remove an existing song first!');
         return;
       }
+      currentSpotifyUser = user;
+      const modal = document.getElementById('spotifyModal');
+      const title = document.getElementById('spotifyModalTitle');
+      const input = document.getElementById('spotifyLinkInput');
+      
+      if (title) title.innerText = user === 'bhanu' ? "Add Track for Bhanu" : "Add Track for Gun";
+      if (input) input.value = '';
+      if (modal) modal.style.display = 'flex';
+    }
 
-      const inputUrl = prompt('Paste Spotify Track Link (open.spotify.com/track/...):');
-      if (!inputUrl || !inputUrl.trim()) return;
+    function closeSpotifyModal() {
+      const modal = document.getElementById('spotifyModal');
+      if (modal) modal.style.display = 'none';
+    }
 
-      const cleanUrl = inputUrl.trim();
+    async function confirmAddSpotifyTrack() {
+      const input = document.getElementById('spotifyLinkInput');
+      const inputUrl = input ? input.value.trim() : '';
+      if (!inputUrl) {
+        closeSpotifyModal();
+        return;
+      }
+
+      const user = currentSpotifyUser;
+      const list = user === 'bhanu' ? tracksBhanu : tracksGun;
+      if (list.length >= 3) {
+        alert('Maximum 3 tracks allowed!');
+        closeSpotifyModal();
+        return;
+      }
+
       const newTrack = {
-        url: cleanUrl,
+        url: inputUrl,
         title: 'Spotify Track',
         artist: 'Playing on Spotify',
         cover: 'https://open.spotifycdn.com/cdn/images/favicon32.8e66b099.png'
       };
 
-      // Auto-fetch song title & album art from Spotify
       try {
-        const res = await fetch('https://open.spotify.com/oembed?url=' + encodeURIComponent(cleanUrl));
+        const res = await fetch('https://open.spotify.com/oembed?url=' + encodeURIComponent(inputUrl));
         if (res.ok) {
           const meta = await res.json();
           if (meta.title) newTrack.title = meta.title;
@@ -641,6 +672,7 @@ const VAULT_KEY = 'bhanu_gun_secret';
 
       list.push(newTrack);
       saveTracks(user);
+      closeSpotifyModal();
     }
 
     function toggleRemoveMode(user) {
@@ -667,14 +699,15 @@ const VAULT_KEY = 'bhanu_gun_secret';
       syncToCloud(category, list);
       renderTracks(user);
     }
-   // --- 1. Instagram Neon Glowing Pop Hearts ---
+
+    // --- 1. Instagram Neon Glowing Pop Hearts ---
     function burstHearts() {
       const heartCount = 7;
       for (let i = 0; i < heartCount; i++) {
         setTimeout(() => {
           const el = document.createElement('div');
           el.className = 'heart-particle';
-          const size = Math.floor(Math.random() * 55 + 75); // 75px se 130px bade glowing hearts
+          const size = Math.floor(Math.random() * 55 + 75);
           el.style.width = size + 'px';
           el.style.height = size + 'px';
           el.style.left = (Math.random() * 70 + 15) + 'vw';
@@ -694,35 +727,33 @@ const VAULT_KEY = 'bhanu_gun_secret';
     burstHearts();
 
     // --- 2. Dynamic Calendar System ---
-   const now = new Date();
-let viewYear = now.getFullYear();
-let viewMonth = now.getMonth();
+    const now = new Date();
+    let viewYear = now.getFullYear();
+    let viewMonth = now.getMonth();
     let selectedDateKey = null;
-
-    let memories = JSON.parse(localStorage.getItem('vault_memories_v2') || JSON.stringify({
-      "2026-11-03": { type: 'special', heading: 'Special Day', subtitle: 'A very special moment to remember and celebrate together.' },
-      "2026-11-14": { type: 'effort', heading: 'Thoughtful Evening', subtitle: 'A cozy coffee conversation filled with sweet efforts.' }
-    }));
 
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-  function changeMonth(delta) {
+    function changeMonth(delta) {
       viewMonth += delta;
       if (viewMonth > 11) { viewMonth = 0; viewYear++; }
       if (viewMonth < 0) { viewMonth = 11; viewYear--; }
       renderCalendar();
-      document.getElementById('memoryCard').style.display = 'none';
+      const card = document.getElementById('memoryCard');
+      if (card) card.style.display = 'none';
     }
 
     const eventPriority = ['unforgettable', 'celebration', 'sweet', 'whispers', 'smiles', 'special', 'effort'];
 
     function renderCalendar() {
-      document.getElementById('calendarMonthTitle').innerText = `${monthNames[viewMonth]} ${viewYear}`;
+      const monthTitle = document.getElementById('calendarMonthTitle');
+      if (monthTitle) monthTitle.innerText = `${monthNames[viewMonth]} ${viewYear}`;
       const grid = document.getElementById('calendarDaysGrid');
+      if (!grid) return;
       grid.innerHTML = '';
 
       const firstDay = new Date(viewYear, viewMonth, 1).getDay();
-      const offset = (firstDay === 0 ? 7 : firstDay) - 1; // Mon = 0
+      const offset = (firstDay === 0 ? 7 : firstDay) - 1;
       const totalDays = new Date(viewYear, viewMonth + 1, 0).getDate();
 
       for (let i = 0; i < offset; i++) {
@@ -737,13 +768,11 @@ let viewMonth = now.getMonth();
         const dateKey = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
         const dayEvents = memories[dateKey] ? (Array.isArray(memories[dateKey]) ? memories[dateKey] : [memories[dateKey]]) : [];
 
-        // Date Number
         const numSpan = document.createElement('span');
         numSpan.innerText = d;
         cell.appendChild(numSpan);
 
         if (dayEvents.length > 0) {
-          // 1. Superior Glow Decision
           let superior = dayEvents[0];
           for (const p of eventPriority) {
             const found = dayEvents.find(e => (e.type || '') === p);
@@ -769,7 +798,6 @@ let viewMonth = now.getMonth();
             cell.style.border = '1px solid #2dd4bf';
           }
 
-          // 2. Dots for Multiple Events
           if (dayEvents.length > 1) {
             const dotsWrap = document.createElement('div');
             dotsWrap.className = 'event-dots-container';
@@ -792,7 +820,7 @@ let viewMonth = now.getMonth();
       }
     }
 
-  function onDateClicked(dateKey, day, cell) {
+    function onDateClicked(dateKey, day, cell) {
       document.querySelectorAll('.date-cell').forEach(c => c.classList.remove('active'));
       selectedDateKey = dateKey;
 
@@ -801,9 +829,9 @@ let viewMonth = now.getMonth();
       if (dayEvents.length > 0) {
         if (cell) cell.classList.add('active');
         const card = document.getElementById('memoryCard');
+        if (!card) return;
         card.style.display = 'block';
 
-        // 1. Header with Clean "+ Add More" Button
         let html = `
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px;">
             <span style="font-weight: 600; font-size: 15px; color: #fff;">${day} ${monthNames[viewMonth]}</span>
@@ -813,7 +841,6 @@ let viewMonth = now.getMonth();
           </div>
         `;
 
-        // 2. Minimalist Memory List
         const typeColors = {
           unforgettable: '#ff2a85',
           celebration: '#f59e0b',
@@ -843,7 +870,6 @@ let viewMonth = now.getMonth();
       }
     }
 
-    // Ek single memory ko delete karne ka function
     function deleteSingleMemory(dateKey, index) {
       if (!memories[dateKey]) return;
       if (!Array.isArray(memories[dateKey])) memories[dateKey] = [memories[dateKey]];
@@ -866,7 +892,6 @@ let viewMonth = now.getMonth();
       }
     }
 
-    // --- Save Date Memory (Multi-event append structure) ---
     function saveDateMemory() {
       const heading = document.getElementById('inputHeading').value.trim();
       const subtitle = document.getElementById('inputSubtitle').value.trim();
@@ -883,7 +908,6 @@ let viewMonth = now.getMonth();
         memories[selectedDateKey] = [memories[selectedDateKey]];
       }
 
-      // Purani memory delete nahi hogi, nayi list me jud jayegi
       memories[selectedDateKey].push({
         type: type,
         heading: heading,
@@ -903,7 +927,6 @@ let viewMonth = now.getMonth();
       onDateClicked(selectedDateKey, day, document.querySelector('.date-cell.active'));
     }
 
-    // --- 1-Year Anniversary Checker & Subtle Haptic Buzz ---
     function checkOneYearCelebration() {
       const t = new Date();
       const todayMonthDay = `-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`;
@@ -913,15 +936,14 @@ let viewMonth = now.getMonth();
         const yearDiff = t.getFullYear() - parseInt(evYear);
 
         if (dateStr.endsWith(todayMonthDay) && yearDiff >= 1) {
-          // 1. Ek baar halka sa subtle haptic vibration
           if (navigator.vibrate) {
             navigator.vibrate(40);
           }
-          // 2. Neon hearts celebration popup
           burstHearts();
         }
       });
     }
+
     function openDateModal(dateKey, day) {
       selectedDateKey = dateKey;
       document.getElementById('modalDateLabel').innerText = `Add Note • ${day} ${monthNames[viewMonth]} ${viewYear}`;
@@ -934,28 +956,16 @@ let viewMonth = now.getMonth();
       document.getElementById('dateModal').style.display = 'none';
     }
 
-    function saveDateMemory() {
-      const heading = document.getElementById('inputHeading').value.trim();
-      const subtitle = document.getElementById('inputSubtitle').value.trim();
-      const type = document.getElementById('selectType').value;
-
-      if (!heading) return;
-
-      memories[selectedDateKey] = { type, heading, subtitle };
-      localStorage.setItem('vault_memories_v2', JSON.stringify(memories));
-      syncToCloud('memories', memories);
-      closeDateModal();
-      renderCalendar();
-    }
-
     // --- 3. Multiple Real Countdowns ---
-    let countdowns = JSON.parse(localStorage.getItem('vault_countdowns_v2') || JSON.stringify([
-      { id: 1, title: 'Special Meeting', target: '2026-11-03T08:00:00' }
-    ]));
-
     function renderCountdowns() {
       const container = document.getElementById('countdownsContainer');
+      if (!container) return;
       container.innerHTML = '';
+
+      if (!countdowns || countdowns.length === 0) {
+        container.innerHTML = '<div style="font-size: 12px; color: #64748B; text-align: center; padding: 10px 0;">No countdowns added yet. Tap + Add New!</div>';
+        return;
+      }
 
       countdowns.forEach(item => {
         const box = document.createElement('div');
@@ -993,6 +1003,7 @@ let viewMonth = now.getMonth();
 
     function openCountdownModal() { document.getElementById('countdownModal').style.display = 'flex'; }
     function closeCountdownModal() { document.getElementById('countdownModal').style.display = 'none'; }
+    
     function saveNewCountdown() {
       const title = document.getElementById('inputCdTitle').value.trim();
       const target = document.getElementById('inputCdTarget').value;
@@ -1005,27 +1016,22 @@ let viewMonth = now.getMonth();
       renderCountdowns();
       updateTimers();
     }
+
     function deleteCountdown(id) {
       countdowns = countdowns.filter(c => c.id !== id);
       localStorage.setItem('vault_countdowns_v2', JSON.stringify(countdowns));
-     syncToCloud('countdowns', countdowns); 
+      syncToCloud('countdowns', countdowns);
       renderCountdowns();
     }
 
-    // --- 4. Spotify Tracks ---
-    function saveTrack(who, val) { 
-      localStorage.setItem('track_' + who, val); 
-      syncToCloud('track_' + who, val);
-    }
-    document.getElementById('songBhanu').value = localStorage.getItem('track_bhanu') || '';
-    document.getElementById('songGun').value = localStorage.getItem('track_gun') || '';
-
-    // Init
+    // --- Init Sequence (Run immediately without crashing) ---
     renderCalendar();
     checkOneYearCelebration();
     renderCountdowns();
     updateTimers();
+    renderAllTracks();
     loadFromCloud();
+
     // --- Auto-Lock on App Switch / Screen Off ---
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
