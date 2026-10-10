@@ -136,6 +136,194 @@
   .btn-modal-save { background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none; color: #fff; padding: 8px 16px; border-radius: 10px; font-size: 12px; font-weight: 600; cursor: pointer; }
 
   @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+/* --- Spotify Suggested Tracks & Mini Players Styling --- */
+.spotify-card {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  padding: 14px;
+  margin-bottom: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.spotify-card.bhanu-card {
+  border-color: rgba(251, 191, 36, 0.3);
+}
+
+.spotify-card.gun-card {
+  border-color: rgba(244, 114, 182, 0.3);
+}
+
+.spotify-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.bhanu-tag {
+  color: #FBBF24;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.gun-tag {
+  color: #F472B6;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.spotify-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.spotify-action-btn {
+  background: rgba(255, 255, 255, 0.06);
+  color: #CBD5E1;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.spotify-action-btn:active {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(0.96);
+}
+
+.spotify-action-btn.active-remove {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #EF4444;
+  color: #FCA5A5;
+}
+
+.tracks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Compact Embed Player Card (Option 1) */
+.spotify-player-card {
+  background: #181818;
+  border-radius: 12px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.player-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.album-cover {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: #282828;
+  flex-shrink: 0;
+}
+
+.track-details {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.track-title {
+  color: #FFFFFF;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-artist {
+  color: #A7A7A7;
+  font-size: 11px;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 10px;
+}
+
+/* Spotify Play Button */
+.spotify-play-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #1DB954;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000000;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  flex-shrink: 0;
+}
+
+.spotify-play-btn:active {
+  transform: scale(0.92);
+}
+
+/* Delete cross button in Remove Mode */
+.track-del-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.8);
+  color: #FFFFFF;
+  border: none;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.tracks-list.is-removing .track-del-btn {
+  display: flex;
+}
+
+.tracks-list.is-removing .spotify-play-btn {
+  display: none;
+}
+
+.no-tracks-txt {
+  font-size: 12px;
+  color: #64748B;
+  text-align: center;
+  padding: 10px 0;
+  font-style: italic;
+}
 </style>
 </head>
 <body>
@@ -210,13 +398,22 @@
     <div class="spotify-card bhanu-card">
       <div class="spotify-card-header">
         <span class="bhanu-tag">BHANU'S PICKS</span>
-        <button type="button" class="spotify-add-btn" id="addBtnBhanu" onclick="promptAddTrack('bhanu')">
-          <!-- WhatsApp Style Clean Pencil Icon -->
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-          </svg>
-          <span>Add Song</span>
-        </button>
+        <div class="spotify-header-actions">
+          <button type="button" class="spotify-action-btn add-btn" id="addBtnBhanu" onclick="promptAddTrack('bhanu')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>Add</span>
+          </button>
+          <button type="button" class="spotify-action-btn remove-btn" id="removeBtnBhanu" onclick="toggleRemoveMode('bhanu')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+            <span>Remove</span>
+          </button>
+        </div>
       </div>
       <div id="tracksBhanu" class="tracks-list"></div>
     </div>
@@ -225,18 +422,26 @@
     <div class="spotify-card gun-card">
       <div class="spotify-card-header">
         <span class="gun-tag">GUN'S PICKS</span>
-        <button type="button" class="spotify-add-btn" id="addBtnGun" onclick="promptAddTrack('gun')">
-          <!-- WhatsApp Style Clean Pencil Icon -->
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-          </svg>
-          <span>Add Song</span>
-        </button>
+        <div class="spotify-header-actions">
+          <button type="button" class="spotify-action-btn add-btn" id="addBtnGun" onclick="promptAddTrack('gun')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>Add</span>
+          </button>
+          <button type="button" class="spotify-action-btn remove-btn" id="removeBtnGun" onclick="toggleRemoveMode('gun')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+            <span>Remove</span>
+          </button>
+        </div>
       </div>
       <div id="tracksGun" class="tracks-list"></div>
     </div>
   </div>
-
   <!-- Modal for Adding/Editing Date Memory -->
   <div id="dateModal" class="modal-overlay">
     <div class="modal-box">
